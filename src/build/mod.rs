@@ -2,6 +2,7 @@
 
 mod blog;
 mod slides;
+mod statics;
 
 use std::path::Path;
 
@@ -9,7 +10,12 @@ use color_eyre::{eyre::Context, Result};
 
 use crate::Config;
 
-pub fn assemble_website(config: &Config, submodules: &Path, dist: &Path) -> Result<()> {
+pub fn assemble_website(
+    config: &Config,
+    statics: &Path,
+    submodules: &Path,
+    dist: &Path,
+) -> Result<()> {
     blog::build(&submodules.join("blog"), &dist.join("blog")).wrap_err("building blog")?;
     slides::build(
         &config.slides,
@@ -17,6 +23,8 @@ pub fn assemble_website(config: &Config, submodules: &Path, dist: &Path) -> Resu
         &dist.join("slides"),
     )
     .wrap_err("building slides")?;
+
+    statics::build(&config.slides, statics, dist).wrap_err("building root files")?;
 
     add_cname(dist)?;
 

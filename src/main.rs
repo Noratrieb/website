@@ -33,6 +33,16 @@ fn main() -> Result<()> {
     // Set the current dir to nonsense to fail everything that relies on it
     let _ = std::env::set_current_dir("/");
 
+    if std::env::args().nth(1).as_deref() == Some("clean") {
+        info!("Cleaning dist");
+        match std::fs::remove_dir_all(root.join("dist")) {
+            Ok(()) => {}
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+            e => return e.wrap_err("removing dist"),
+        }
+        return Ok(());
+    }
+
     let config =
         std::fs::read_to_string(root.join("config.toml")).wrap_err("reading config.toml")?;
     let config = toml::from_str::<Config>(&config).wrap_err("parsing config.toml")?;
@@ -45,7 +55,7 @@ fn main() -> Result<()> {
     submodule::sync(&submodules_path, &sub_config).wrap_err("syncing subtrees")?;
 
     let dist_path = root.join("dist");
-    build::assemble_website(&config, &submodules_path, &dist_path)?;
+    build::assemble_website(&config, &root.join("static"), &submodules_path, &dist_path)?;
 
     Ok(())
 }

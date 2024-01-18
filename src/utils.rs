@@ -53,3 +53,18 @@ pub fn cp_r(from: &Path, to: &Path) -> Result<()> {
     .wrap_err(format!("copying to {}", to.display()))?;
     Ok(())
 }
+
+pub fn cp_content(from: &Path, to: &Path) -> Result<()> {
+    fs_extra::dir::copy(
+        from,
+        to,
+        &CopyOptions {
+            overwrite: true,
+            copy_inside: true,
+            content_only: true,
+            ..CopyOptions::default()
+        },
+    )
+    .wrap_err(format!("copying to {}", to.display()))?;
+    Ok(())
+}

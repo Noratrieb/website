@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slides</title>
+</head>
+<body>
+    <h1>Slides</h1>
+    <p>Talks I have given with slides available:</p>
+    <div>
+        {% for talk in talks %}
+        <a href="{{ talk }}">{{ talk }}</a>
+        {% endfor %}
+    </div>
+</body>
+</html>
