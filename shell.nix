@@ -1,3 +1,3 @@
-{ pkgs ? import <nixpkgs> {} }: pkgs.mkShell {
-  packages = with pkgs; [ rustup ];
+{ pkgs ? import <nixpkgs> { } }: pkgs.mkShell {
+  packages = with pkgs; [ rustup hugo ];
 }

@@ -1,7 +1,7 @@
 //! Implements a simplistic form of git submodules.
-//! 
+//!
 //! The config format is as follows:
-//! 
+//!
 //! A list of
 //! ```toml
 //! [[submodule]]
@@ -9,7 +9,7 @@
 //! url = ""
 //! commit = ""
 //! ```
-//! 
+//!
 //! For example,
 //! ```toml
 //! [[submodule]]
@@ -17,11 +17,11 @@
 //! url = "https://github.com/Nilstrieb/nixos.git"
 //! commit = "c5b2fc10b9266b105d792d958b8f13479866a7bd"
 //! ```
-//! 
+//!
 //! This module will check them out into a directory called `submodules` in the current directory.
-//! Make sure to put this directory into `.gitignore`. 
+//! Make sure to put this directory into `.gitignore`.
 
-use std::{io, path, process};
+use std::{path::Path, process};
 
 use color_eyre::{
     eyre::{Context, OptionExt},
@@ -73,16 +73,10 @@ impl Submodules {
     }
 }
 
-pub fn sync(config: &Submodules) -> color_eyre::Result<()> {
+pub fn sync(path: &Path, config: &Submodules) -> color_eyre::Result<()> {
     info!("Syncing submodules...");
 
-    let submodules_path = path::Path::new("submodules");
-
-    match std::fs::create_dir(submodules_path) {
-        Ok(()) => info!("Created ./submodules"),
-        Err(e) if e.kind() == io::ErrorKind::AlreadyExists => {}
-        e => return e.wrap_err("failed to create submodules"),
-    }
+    utils::create_dir_if_not_exist(path)?;
 
     for sync in &config.configs {
         let name = &sync.name;
@@ -91,12 +85,12 @@ pub fn sync(config: &Submodules) -> color_eyre::Result<()> {
         let span = info_span!("Syncing submodule", ?name, ?url);
         let _span = span.enter();
 
-        let sub_path = submodules_path.join(name);
+        let sub_path = path.join(name);
         if !sub_path.exists() {
             info!(?name, ?url, "Cloning");
             let mut cmd = process::Command::new("git");
             cmd.args(&["clone", url, sub_path.to_str().unwrap()]);
-            utils::run_process(&mut cmd).wrap_err("running git clone")?;
+            utils::run_process(&mut cmd)?;
         } else {
             debug!(?name, ?url, "Repo already exists");
         }
@@ -123,16 +117,14 @@ pub fn sync(config: &Submodules) -> color_eyre::Result<()> {
                     "fetch",
                     "origin",
                     sync.commit.as_str(),
-                ]))
-                .wrap_err("git fetch")?;
+                ]))?;
             }
 
             utils::run_process(process::Command::new("git").current_dir(&sub_path).args(&[
                 "reset",
                 "--hard",
                 sync.commit.as_str(),
-            ]))
-            .wrap_err("git reset --hard")?;
+            ]))?;
         }
     }
 

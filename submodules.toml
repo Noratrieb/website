@@ -2,3 +2,8 @@
 name = "blog"
 url = "https://github.com/Nilstrieb/nilstrieb.github.io.git"
 commit = "a48053540e1bc85403c25526de304e82f5371a22"
+
+[[submodule]]
+name = "slides"
+url = "https://github.com/Nilstrieb/slides.git"
+commit = "0401f35c22b124b69447655f0c537badae9e223c"

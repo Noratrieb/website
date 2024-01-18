@@ -1,22 +1,51 @@
+mod build;
 mod submodule;
 mod utils;
 
 #[macro_use]
 extern crate tracing;
 
+use std::path::Path;
+
 use color_eyre::{eyre::Context, Result};
+use serde::Deserialize;
 use tracing_subscriber::EnvFilter;
 
-fn main() -> Result<()> {
-    tracing_subscriber::fmt().with_env_filter(EnvFilter::from_default_env()).init();
+const ROOT_DIR: &str = env!("ROOT_DIR");
 
-    let sub_config =
-        std::fs::read_to_string("submodules.toml").wrap_err("reading ./submodules.toml")?;
+#[derive(Deserialize)]
+struct Config {
+    slides: SlidesConfig,
+}
+
+#[derive(Deserialize)]
+struct SlidesConfig {
+    talks: Vec<String>,
+}
+
+fn main() -> Result<()> {
+    tracing_subscriber::fmt()
+        .with_env_filter(EnvFilter::from_default_env())
+        .init();
+
+    let root = Path::new(ROOT_DIR);
+
+    // Set the current dir to nonsense to fail everything that relies on it
+    let _ = std::env::set_current_dir("/");
+
+    let config =
+        std::fs::read_to_string(root.join("config.toml")).wrap_err("reading config.toml")?;
+    let config = toml::from_str::<Config>(&config).wrap_err("parsing config.toml")?;
+
+    let sub_config = std::fs::read_to_string(root.join("submodules.toml"))
+        .wrap_err("reading submodules.toml")?;
     let sub_config =
         submodule::Submodules::parse(&sub_config).wrap_err("invalid submodules.toml")?;
-    submodule::sync(&sub_config).wrap_err("syncing subtrees")?;
+    let submodules_path = root.join("submodules");
+    submodule::sync(&submodules_path, &sub_config).wrap_err("syncing subtrees")?;
 
-    info!("Hello, world!");
+    let dist_path = root.join("dist");
+    build::assemble_website(&config, &submodules_path, &dist_path)?;
 
     Ok(())
 }
