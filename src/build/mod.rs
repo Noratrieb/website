@@ -18,5 +18,13 @@ pub fn assemble_website(config: &Config, submodules: &Path, dist: &Path) -> Resu
     )
     .wrap_err("building slides")?;
 
+    add_cname(dist)?;
+
+    Ok(())
+}
+
+fn add_cname(dist: &Path) -> Result<()> {
+    let cname = "next.nilstrieb.dev\n";
+    std::fs::write(dist.join("CNAME"), cname).wrap_err("writing cname")?;
     Ok(())
 }
