@@ -131,7 +131,7 @@
         if (ev.keyCode === B) {
           isBKeyDown = true;
           blog.classList.add("blog-back-alley");
-          blog.href = "/back-alley.html";
+          blog.href = "/" + "{{ back_alley_name }}";
           blog.children[0].innerText = "blog?";
         }
       });

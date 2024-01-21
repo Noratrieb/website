@@ -16,8 +16,8 @@ pub fn build(config: &SlidesConfig, slides: &Path, dist: &Path) -> Result<()> {
     utils::cp_r(&slides.join("plugin"), &dist.join("plugin")).wrap_err("copying reveal.js dist")?;
 
     for talk in &config.talks {
-        let path = slides.join(talk.dirname());
-        let dist = dist.join(talk.dirname());
+        let path = slides.join(talk.dir_name());
+        let dist = dist.join(talk.dir_name());
 
         utils::cp_r(&path, &dist).wrap_err("copying slide data")?;
     }

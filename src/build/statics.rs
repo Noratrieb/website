@@ -1,18 +1,11 @@
 //! Root index.html and some other static stuff
 
-use std::{fs, path::Path};
+use std::path::Path;
 
-use askama::Template;
 use color_eyre::{eyre::WrapErr, Result};
 use rand::seq::SliceRandom;
 
-use crate::{utils, SlidesConfig, Talk};
-
-#[derive(askama::Template)]
-#[template(path = "slides.html")]
-struct Slides {
-    talks: Vec<Talk>,
-}
+use crate::{utils, SlidesConfig};
 
 pub fn build(
     rng: &mut rand::rngs::StdRng,
@@ -27,28 +20,30 @@ pub fn build(
 
     let back_alley_name = format!("back-alley-{back_alley_name}.html");
 
-    utils::cp_content(&statics.join("root"), dist).wrap_err("copying root files")?;
+    let mut context = tera::Context::new();
 
-    let back_alley = dist.join("back-alley.html");
-    std::fs::copy(&back_alley, dist.join(&back_alley_name)).wrap_err("copying back-alley.html")?;
-    fs::remove_file(back_alley).wrap_err("deleting normal back-alley.html")?;
+    context.insert("back_alley_name", back_alley_name.as_str());
+    context.insert("talks", &config.talks);
 
-    let index_html = dist.join("index.html");
-    let index = fs::read_to_string(&index_html).wrap_err("reading index.html")?;
-    fs::write(
-        index_html,
-        index.replace("back-alley.html", &back_alley_name),
-    )
-    .wrap_err("writing back index.html")?;
+    utils::copy_fn(&statics.join("root"), dist, |content, ext, opts| {
+        if ext.is_some_and(|ext| matches!(ext, "html" | "css")) {
+            if opts.dest_path.ends_with("back-alley.html") {
+                opts.dest_path.set_file_name(&back_alley_name);
+            }
 
-    let slide_html = Slides {
-        talks: config.talks.clone(),
-    }
-    .render()
-    .wrap_err("rendering slide index")?;
+            let content = String::from_utf8(content).wrap_err("HTML or CSS is invalid UTF-8")?;
+            let mut tera = tera::Tera::default();
+            tera.add_raw_template("template", &content)
+                .wrap_err("parsing template")?;
+            return tera
+                .render("template", &context)
+                .wrap_err("failed to render")
+                .map(String::into_bytes);
+        }
 
-    fs::write(dist.join("slides").join("index.html"), slide_html)
-        .wrap_err("writing slides index.html")?;
+        Ok(content)
+    })
+    .wrap_err("copying root files")?;
 
     Ok(())
 }

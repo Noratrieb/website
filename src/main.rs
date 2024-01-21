@@ -18,6 +18,7 @@ use color_eyre::{
 use notify::{RecursiveMode, Watcher};
 use rand::SeedableRng;
 use serde::Deserialize;
+use serde_derive::Serialize;
 use tracing::level_filters::LevelFilter;
 use tracing_subscriber::EnvFilter;
 
@@ -28,20 +29,22 @@ struct Config {
     slides: SlidesConfig,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 struct SlidesConfig {
     talks: Vec<Talk>,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Serialize, Clone)]
 struct Talk {
     name: String,
     date: String,
     location: String,
+    #[serde(skip_deserializing)]
+    dir_name: String,
 }
 
 impl Talk {
-    fn dirname(&self) -> String {
+    fn dir_name(&self) -> String {
         format!(
             "{}-{}",
             self.date,
@@ -147,7 +150,11 @@ fn watch(root: &'static Path) -> Result<()> {
 fn build(rng: &mut rand::rngs::StdRng, root: &Path) -> Result<()> {
     let config =
         std::fs::read_to_string(root.join("config.toml")).wrap_err("reading config.toml")?;
-    let config = toml::from_str::<Config>(&config).wrap_err("parsing config.toml")?;
+
+    let mut config = toml::from_str::<Config>(&config).wrap_err("parsing config.toml")?;
+    config.slides.talks.iter_mut().for_each(|talk| {
+        talk.dir_name = talk.dir_name();
+    });
 
     let sub_config = std::fs::read_to_string(root.join("submodules.toml"))
         .wrap_err("reading submodules.toml")?;
