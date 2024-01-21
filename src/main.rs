@@ -16,6 +16,7 @@ use color_eyre::{
     Result,
 };
 use notify::{RecursiveMode, Watcher};
+use rand::SeedableRng;
 use serde::Deserialize;
 use tracing::level_filters::LevelFilter;
 use tracing_subscriber::EnvFilter;
@@ -74,14 +75,18 @@ fn main() -> Result<()> {
             Ok(())
         }
         Some("watch") => watch(root),
-        Some("build") => build(root),
+        Some("build") => build(&mut rand::rngs::StdRng::from_entropy(), root),
         Some(cmd) => bail!("invalid subcommand {cmd}"),
         None => bail!("no subcommand provided"),
     }
 }
 
 fn watch(root: &'static Path) -> Result<()> {
-    build(root).wrap_err("initial build")?;
+    let seed: u64 = rand::random();
+
+    let rng = move || rand::rngs::StdRng::seed_from_u64(seed);
+
+    build(&mut rng(), root).wrap_err("initial build")?;
     let (send, recv) = std::sync::mpsc::sync_channel(1);
     let mut watcher = notify::recommended_watcher(move |res| match res {
         Ok(_) => {
@@ -130,7 +135,7 @@ fn watch(root: &'static Path) -> Result<()> {
 
             last = now;
             info!("Received update, rebuilding");
-            if let Err(e) = build(root) {
+            if let Err(e) = build(&mut rng(), root) {
                 error!(?e);
             }
         }
@@ -139,7 +144,7 @@ fn watch(root: &'static Path) -> Result<()> {
     .map_err(|_| eyre!("build thread panicked"))
 }
 
-fn build(root: &Path) -> Result<()> {
+fn build(rng: &mut rand::rngs::StdRng, root: &Path) -> Result<()> {
     let config =
         std::fs::read_to_string(root.join("config.toml")).wrap_err("reading config.toml")?;
     let config = toml::from_str::<Config>(&config).wrap_err("parsing config.toml")?;
@@ -152,7 +157,13 @@ fn build(root: &Path) -> Result<()> {
     submodule::sync(&submodules_path, &sub_config).wrap_err("syncing subtrees")?;
 
     let dist_path = root.join("dist");
-    build::assemble_website(&config, &root.join("static"), &submodules_path, &dist_path)?;
+    build::assemble_website(
+        rng,
+        &config,
+        &root.join("static"),
+        &submodules_path,
+        &dist_path,
+    )?;
 
     Ok(())
 }

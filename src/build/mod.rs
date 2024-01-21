@@ -11,6 +11,7 @@ use color_eyre::{eyre::Context, Result};
 use crate::Config;
 
 pub fn assemble_website(
+    rng: &mut rand::rngs::StdRng,
     config: &Config,
     statics: &Path,
     submodules: &Path,
@@ -24,7 +25,7 @@ pub fn assemble_website(
     )
     .wrap_err("building slides")?;
 
-    statics::build(&config.slides, statics, dist).wrap_err("building root files")?;
+    statics::build(rng, &config.slides, statics, dist).wrap_err("building root files")?;
 
     add_cname(dist)?;
 
