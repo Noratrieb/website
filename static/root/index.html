@@ -16,6 +16,7 @@
       }
 
       .ferrisuwu {
+        display: none;
         z-index: 1;
         position: absolute;
         right: -100px;
@@ -23,6 +24,7 @@
       }
 
       .ferrisuwu-animate {
+        display: block;
         animation-iteration-count: 1;
         animation-name: ferrisuwu-enter;
         animation-duration: 3s;
@@ -41,7 +43,7 @@
       }
     </style>
   </head>
-  <body>
+  <body class="overflow-hidden">
     <div class="main-content">
       <div class="main-content-inner">
         <h1>Nilstrieb's website</h1>
@@ -94,7 +96,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="overflow-hidden">
       <img id="ferrisuwu" class="ferrisuwu" src="static/ferrisuwu.webp" />
     </div>
 
