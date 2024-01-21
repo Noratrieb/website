@@ -44,7 +44,7 @@ impl Talk {
         format!(
             "{}-{}",
             self.date,
-            self.name.replace(" ", "-").to_lowercase()
+            self.name.replace(' ', "-").to_lowercase()
         )
     }
 }

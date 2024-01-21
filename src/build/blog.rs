@@ -11,14 +11,14 @@ pub fn build(blog: &Path, dist: &Path) -> Result<()> {
 
     utils::run_process(
         Command::new("git")
-            .args(&["submodule", "init"])
-            .current_dir(&blog),
+            .args(["submodule", "init"])
+            .current_dir(blog),
     )?;
 
     utils::run_process(
         Command::new("git")
-            .args(&["submodule", "update"])
-            .current_dir(&blog),
+            .args(["submodule", "update"])
+            .current_dir(blog),
     )?;
 
     // Patch config
@@ -29,8 +29,8 @@ pub fn build(blog: &Path, dist: &Path) -> Result<()> {
 
     utils::run_process(
         Command::new("hugo")
-            .args(&["--minify", "--destination", dist.to_str().unwrap()])
-            .current_dir(&blog),
+            .args(["--minify", "--destination", dist.to_str().unwrap()])
+            .current_dir(blog),
     )?;
 
     Ok(())

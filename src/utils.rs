@@ -19,7 +19,7 @@ pub fn run_process(cmd: &mut Command) -> Result<String> {
             );
         }
 
-        Ok(String::from_utf8(output.stdout).wrap_err("stdout is not UTF-8")?)
+        String::from_utf8(output.stdout).wrap_err("stdout is not UTF-8")
     }
     run_process_inner(cmd).wrap_err(format!(
         "{} {}",

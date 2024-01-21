@@ -89,7 +89,7 @@ pub fn sync(path: &Path, config: &Submodules) -> color_eyre::Result<()> {
         if !sub_path.exists() {
             info!(?name, ?url, "Cloning");
             let mut cmd = process::Command::new("git");
-            cmd.args(&["clone", url, sub_path.to_str().unwrap()]);
+            cmd.args(["clone", url, sub_path.to_str().unwrap()]);
             utils::run_process(&mut cmd)?;
         } else {
             debug!(?name, ?url, "Repo already exists");
@@ -97,7 +97,7 @@ pub fn sync(path: &Path, config: &Submodules) -> color_eyre::Result<()> {
 
         let current_commit = utils::run_process(
             process::Command::new("git")
-                .args(&["rev-parse", "HEAD"])
+                .args(["rev-parse", "HEAD"])
                 .current_dir(&sub_path),
         )
         .wrap_err("running git rev-parse HEAD")?;
@@ -108,19 +108,19 @@ pub fn sync(path: &Path, config: &Submodules) -> color_eyre::Result<()> {
             info!("Need to change commit");
             let commit_exists = utils::run_process(
                 process::Command::new("git")
-                    .args(&["cat-file", "-t", sync.commit.as_str()])
+                    .args(["cat-file", "-t", sync.commit.as_str()])
                     .current_dir(&sub_path),
             );
-            if !commit_exists.is_ok_and(|typ| typ == "commit\n".to_owned()) {
+            if !commit_exists.is_ok_and(|typ| typ == *"commit\n") {
                 info!("Must fetch commit");
-                utils::run_process(process::Command::new("git").current_dir(&sub_path).args(&[
+                utils::run_process(process::Command::new("git").current_dir(&sub_path).args([
                     "fetch",
                     "origin",
                     sync.commit.as_str(),
                 ]))?;
             }
 
-            utils::run_process(process::Command::new("git").current_dir(&sub_path).args(&[
+            utils::run_process(process::Command::new("git").current_dir(&sub_path).args([
                 "reset",
                 "--hard",
                 sync.commit.as_str(),
