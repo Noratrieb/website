@@ -6,8 +6,11 @@
     <title>nilstrieb.dev</title>
     <link rel="stylesheet" href="static/theme.css" />
     <style>
-      .secret {
+      .hint {
         color: #5b4561;
+      }
+
+      .secret {
         cursor: pointer;
       }
 
@@ -58,7 +61,7 @@
           </p>
           <p>
             there may be many
-            <span onclick="onSecretClick()" class="secret" role="button">secrets</span>
+            <span onclick="onSecretClick()" class="secret hint" role="button">secrets</span>
             depending on where you look....
           </p>
         </div>
@@ -94,7 +97,8 @@
           <p>
             in addition to all the other stuff mentioned above, i also have some random projects
             hosted on my server. they are pretty bad and i won't promote them this openly, but you
-            will be able to find them if you *really* want to.
+            will be able to find them if you really want to. some people have been saying
+            that there might be a secret <span role="button" class="hint">b</span>ack alley somewhere...
           </p>
         </div>
       </div>
@@ -128,7 +132,7 @@
           isBKeyDown = true;
           blog.classList.add("blog-back-alley");
           blog.href = "/back-alley.html";
-          blog.children[0].innerText = "blog?"
+          blog.children[0].innerText = "blog?";
         }
       });
       document.addEventListener("keyup", (ev) => {
@@ -137,7 +141,7 @@
           isBKeyDown = false;
           blog.classList.remove("blog-back-alley");
           blog.href = "/blog";
-          blog.children[0].innerText = "blog"
+          blog.children[0].innerText = "blog";
         }
       });
     </script>
