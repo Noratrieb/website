@@ -33,7 +33,7 @@ pub fn assemble_website(
 }
 
 fn add_cname(dist: &Path) -> Result<()> {
-    let cname = "next.nilstrieb.dev\n";
+    let cname = "nilstrieb.dev\n";
     std::fs::write(dist.join("CNAME"), cname).wrap_err("writing cname")?;
     Ok(())
 }
