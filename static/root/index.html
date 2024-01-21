@@ -41,6 +41,10 @@
           right: -100px;
         }
       }
+
+      .blog-back-alley {
+        background-color: #6a1b7e;
+      }
     </style>
   </head>
   <body class="overflow-hidden">
@@ -74,7 +78,7 @@
         <div>
           <h2>my blog</h2>
           <p>i have a blog, it might be interesting, maybe.</p>
-          <a href="/blog" class="call-to-action">
+          <a href="/blog" id="blog-link" class="call-to-action" aria-live="polite">
             <span>blog</span>
           </a>
         </div>
@@ -103,10 +107,10 @@
     <script>
       let clickCount = 0;
       let ferrisuwuAnimating = false;
+      const ferrisuwu = document.getElementById("ferrisuwu");
       function onSecretClick() {
         clickCount++;
         if (clickCount > 3 && !ferrisuwuAnimating) {
-          const ferrisuwu = document.getElementById("ferrisuwu");
           ferrisuwu.classList.add("ferrisuwu-animate");
           ferrisuwuAnimating = true;
           setTimeout(() => {
@@ -115,6 +119,27 @@
           }, 3000);
         }
       }
+
+      const blog = document.getElementById("blog-link");
+      let isBKeyDown = false;
+      document.addEventListener("keydown", (ev) => {
+        const B = 66;
+        if (ev.keyCode === B) {
+          isBKeyDown = true;
+          blog.classList.add("blog-back-alley");
+          blog.href = "/back-alley.html";
+          blog.children[0].innerText = "blog?"
+        }
+      });
+      document.addEventListener("keyup", (ev) => {
+        const B = 66;
+        if (ev.keyCode === B) {
+          isBKeyDown = false;
+          blog.classList.remove("blog-back-alley");
+          blog.href = "/blog";
+          blog.children[0].innerText = "blog"
+        }
+      });
     </script>
   </body>
 </html>
