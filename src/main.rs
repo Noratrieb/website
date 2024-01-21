@@ -29,7 +29,24 @@ struct Config {
 
 #[derive(Deserialize)]
 struct SlidesConfig {
-    talks: Vec<String>,
+    talks: Vec<Talk>,
+}
+
+#[derive(Deserialize, Clone)]
+struct Talk {
+    name: String,
+    date: String,
+    location: String,
+}
+
+impl Talk {
+    fn dirname(&self) -> String {
+        format!(
+            "{}-{}",
+            self.date,
+            self.name.replace(" ", "-").to_lowercase()
+        )
+    }
 }
 
 fn main() -> Result<()> {
@@ -64,6 +81,7 @@ fn main() -> Result<()> {
 }
 
 fn watch(root: &'static Path) -> Result<()> {
+    build(root).wrap_err("initial build")?;
     let (send, recv) = std::sync::mpsc::sync_channel(1);
     let mut watcher = notify::recommended_watcher(move |res| match res {
         Ok(_) => {

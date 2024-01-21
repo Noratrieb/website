@@ -5,12 +5,12 @@ use std::{fs, path::Path};
 use askama::Template;
 use color_eyre::{eyre::WrapErr, Result};
 
-use crate::{utils, SlidesConfig};
+use crate::{utils, SlidesConfig, Talk};
 
 #[derive(askama::Template)]
 #[template(path = "slides.html")]
 struct Slides {
-    talks: Vec<String>,
+    talks: Vec<Talk>,
 }
 
 pub fn build(config: &SlidesConfig, statics: &Path, dist: &Path) -> Result<()> {

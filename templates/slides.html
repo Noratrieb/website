@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/theme.css" />
     <title>Slides</title>
-</head>
-<body>
-    <h1>Slides</h1>
-    <p>Talks I have given with slides available:</p>
-    <div>
+  </head>
+  <body>
+    <div class="main-content">
+      <div class="main-content-inner">
+        <h1>slides</h1>
+        <p>slides from talks that i have given</p>
+
         {% for talk in talks %}
-        <a href="{{ talk }}">{{ talk }}</a>
+        <div>
+            <h2>{{ talk.date }} - {{ talk.name }}</h2>
+            <p>{{ talk.location }}</p>
+            <a href="{{ talk.dirname() }}">{{ talk.dirname() }}</a>
+        </div>
         {% endfor %}
+      </div>
     </div>
-</body>
+  </body>
 </html>
