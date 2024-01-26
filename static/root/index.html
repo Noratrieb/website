@@ -105,7 +105,7 @@
             in addition to all the other stuff mentioned above, i also have some random projects
             hosted on my server. they are pretty bad and i won't promote them this openly, but you
             will be able to find them if you really want to. some people have been saying that there
-            might be a secret <span role="button" class="hint">b</span>ack alley somewhere...
+            might be a secret <span role="button" class="hint" onclick="onBackalleyClick()">b</span>ack alley somewhere...
           </p>
         </div>
       </div>
@@ -133,22 +133,35 @@
 
       const blog = document.getElementById("blog-link");
       let isBKeyDown = false;
+      function activateBackalley() {
+        isBKeyDown = true;
+        blog.classList.add("blog-back-alley");
+        blog.href = "/" + "{{ back_alley_name }}";
+        blog.children[0].innerText = "blog?";
+      }
+      function deactivateBackalley() {
+        isBKeyDown = false;
+        blog.classList.remove("blog-back-alley");
+        blog.href = "/blog";
+        blog.children[0].innerText = "blog";
+      }
+      let backalleyClicks = 0;
+      function onBackalleyClick() {
+        backalleyClicks++;
+        if (backalleyClicks > 1) {
+          activateBackalley();
+        }
+      }
       document.addEventListener("keydown", (ev) => {
         const B = 66;
         if (ev.keyCode === B) {
-          isBKeyDown = true;
-          blog.classList.add("blog-back-alley");
-          blog.href = "/" + "{{ back_alley_name }}";
-          blog.children[0].innerText = "blog?";
+          activateBackalley();
         }
       });
       document.addEventListener("keyup", (ev) => {
         const B = 66;
         if (ev.keyCode === B) {
-          isBKeyDown = false;
-          blog.classList.remove("blog-back-alley");
-          blog.href = "/blog";
-          blog.children[0].innerText = "blog";
+          deactivateBackalley();
         }
       });
     </script>
