@@ -169,7 +169,7 @@ fn build(rng: &mut rand::rngs::StdRng, root: &Path) -> Result<()> {
     let sub_config =
         submodule::Submodules::parse(&sub_config).wrap_err("invalid submodules.toml")?;
     let submodules_path = root.join("submodules");
-    submodule::sync(&submodules_path, &sub_config).wrap_err("syncing subtrees")?;
+    submodule::sync(&submodules_path, &sub_config).wrap_err("syncing submodules")?;
 
     let dist_path = root.join("dist");
     build::assemble_website(

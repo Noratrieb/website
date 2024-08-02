@@ -28,7 +28,7 @@ use color_eyre::{
     Result,
 };
 
-use crate::utils;
+use crate::utils::{self, cp_r};
 
 pub struct Submodules {
     configs: Vec<SyncConfig>,
@@ -86,7 +86,14 @@ pub fn sync(path: &Path, config: &Submodules) -> color_eyre::Result<()> {
         let _span = span.enter();
 
         let sub_path = path.join(name);
-        if !sub_path.exists() {
+
+        if let Ok(path) = std::env::var(format!("SUBMODULE_DIR_{}", name.to_uppercase())) {
+            info!(?name, ?path, "Taking submodule from hardcoded path");
+            cp_r(Path::new(&path), &sub_path).wrap_err("copying path from SUBMODULE_DIR")?;
+            continue;
+        }
+
+        if !sub_path.exists() {           
             info!(?name, ?url, "Cloning");
             let mut cmd = process::Command::new("git");
             cmd.args(["clone", url, sub_path.to_str().unwrap()]);
