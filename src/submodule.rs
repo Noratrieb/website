@@ -14,7 +14,7 @@
 //! ```toml
 //! [[submodule]]
 //! name = "nixos"
-//! url = "https://github.com/Nilstrieb/nixos.git"
+//! url = "https://github.com/Noratrieb/nixos.git"
 //! commit = "c5b2fc10b9266b105d792d958b8f13479866a7bd"
 //! ```
 //!

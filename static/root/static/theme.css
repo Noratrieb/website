@@ -1,3 +1,7 @@
+html {
+  --accept-color: #e5a5c2;
+}
+
 body {
   font-family: Verdana, sans-serif;
   background-color: #e6dae9;
@@ -16,7 +20,7 @@ body {
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1300px) {
   .main-content-inner {
     width: 50vw;
   }
@@ -25,7 +29,7 @@ body {
 .call-to-action {
   width: 250px;
   height: 50px;
-  background-color: #8c499d;
+  background-color: var(--accept-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,8 +48,22 @@ body {
 }
 
 .call-to-action * {
-  color: white;
+  color: black;
 }
+
+.columns-2 {
+  display: flex;
+  flex-direction: row;
+}
+
+
+@media (max-width: 1000px) {
+  .columns-2 {
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+
 
 @media (prefers-color-scheme: light) {
   body {
@@ -62,6 +80,10 @@ body {
   body {
     background-color: #1b191c;
     color: #e6dae9;
+  }
+
+  a {
+    color: var(--accept-color);
   }
 
   .secret {
