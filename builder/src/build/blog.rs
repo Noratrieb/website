@@ -9,18 +9,6 @@ use crate::utils;
 pub fn build(blog: &Path, dist: &Path) -> Result<()> {
     info!("Building blog with hugo");
 
-    utils::run_process(
-        Command::new("git")
-            .args(["submodule", "init"])
-            .current_dir(blog),
-    )?;
-
-    utils::run_process(
-        Command::new("git")
-            .args(["submodule", "update"])
-            .current_dir(blog),
-    )?;
-
     // Patch config
     let config =
         std::fs::read_to_string(blog.join("config.toml")).wrap_err("reading blog config")?;

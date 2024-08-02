@@ -1,7 +1,7 @@
 [[submodule]]
 name = "blog"
 url = "https://github.com/Noratrieb/nilstrieb.github.io.git"
-commit = "a48053540e1bc85403c25526de304e82f5371a22"
+commit = "d2e858ddca7e59c9d9c843f7273ff0f75d65421e"
 
 [[submodule]]
 name = "slides"
