@@ -1,8 +1,12 @@
 # Cargo target dir
-/target
+/builder/target
 
 # Custom Submodules
 /submodules
 
 # Resulting website
 /dist
+
+# Nix stuff
+/builder/result
+/result

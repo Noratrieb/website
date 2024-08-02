@@ -6,7 +6,7 @@ mod utils;
 extern crate tracing;
 
 use std::{
-    path::Path,
+    path::{Path, PathBuf},
     process::{self, Stdio},
     time,
 };
@@ -21,8 +21,6 @@ use serde::Deserialize;
 use serde_derive::Serialize;
 use tracing::level_filters::LevelFilter;
 use tracing_subscriber::EnvFilter;
-
-const ROOT_DIR: &str = env!("ROOT_DIR");
 
 #[derive(Deserialize)]
 struct Config {
@@ -62,7 +60,7 @@ fn main() -> Result<()> {
         )
         .init();
 
-    let root = Path::new(ROOT_DIR);
+    let root = std::env::current_dir().wrap_err("getting current directory")?;
 
     // Set the current dir to nonsense to fail everything that relies on it
     let _ = std::env::set_current_dir("/");
@@ -78,18 +76,26 @@ fn main() -> Result<()> {
             Ok(())
         }
         Some("watch") => watch(root),
-        Some("build") => build(&mut rand::rngs::StdRng::from_entropy(), root),
+        Some("build") => {
+            let mut rng = match std::env::var("WEBSITE_RNG_SEED") {
+                Ok(seed) => rand::rngs::StdRng::seed_from_u64(
+                    seed.parse().wrap_err("WEBSITE_RNG_SEED must be a u64")?,
+                ),
+                Err(_) => rand::rngs::StdRng::from_entropy(),
+            };
+            build(&mut rng, &root)
+        }
         Some(cmd) => bail!("invalid subcommand {cmd}"),
         None => bail!("no subcommand provided"),
     }
 }
 
-fn watch(root: &'static Path) -> Result<()> {
+fn watch(root: PathBuf) -> Result<()> {
     let seed: u64 = rand::random();
 
     let rng = move || rand::rngs::StdRng::seed_from_u64(seed);
 
-    build(&mut rng(), root).wrap_err("initial build")?;
+    build(&mut rng(), &root).wrap_err("initial build")?;
     let (send, recv) = std::sync::mpsc::sync_channel(1);
     let mut watcher = notify::recommended_watcher(move |res| match res {
         Ok(_) => {
@@ -105,7 +111,9 @@ fn watch(root: &'static Path) -> Result<()> {
     watcher.watch(&root.join("config.toml"), RecursiveMode::NonRecursive)?;
 
     info!("Starting webserver");
+    let root1 = root.clone();
     std::thread::spawn(move || {
+        let root = root1;
         let run = || -> Result<()> {
             let path = root.join("dist");
             let mut server = process::Command::new("live-server");
@@ -138,7 +146,7 @@ fn watch(root: &'static Path) -> Result<()> {
 
             last = now;
             info!("Received update, rebuilding");
-            if let Err(e) = build(&mut rng(), root) {
+            if let Err(e) = build(&mut rng(), &root) {
                 error!(?e);
             }
         }
