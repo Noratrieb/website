@@ -1,4 +1,4 @@
-name: github pages
+name: test
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
   pull_request:
 
 jobs:
-  deploy:
-    runs-on: ubuntu-20.04
+  test:
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,10 +26,3 @@ jobs:
 
       - name: Build website
         run: cargo run --manifest-path ./builder/Cargo.toml build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
