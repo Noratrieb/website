@@ -13,8 +13,9 @@ pub fn run_process(cmd: &mut Command) -> Result<String> {
 
         if !output.status.success() {
             bail!(
-                "command returned error: {}",
-                String::from_utf8(output.stderr).wrap_err("stderr is not UTF-8")?
+                "command returned error: {}\n{}",
+                String::from_utf8(output.stderr).wrap_err("stderr is not UTF-8")?,
+                String::from_utf8(output.stdout).wrap_err("stderr is not UTF-8")?
             );
         }
 
