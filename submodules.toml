@@ -1,6 +1,6 @@
 [[submodule]]
 name = "blog"
-url = "https://github.com/Noratrieb/nilstrieb.github.io.git"
+url = "https://github.com/Noratrieb/blog.git"
 commit = "3f1978cc85668495bc5a9ac43d5c44fa844c97d6"
 
 [[submodule]]
