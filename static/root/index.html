@@ -1,202 +1,257 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>noratrieb.dev</title>
+    <title>Noratrieb</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="stylesheet" href="static/theme.css" />
     <style>
-      .hint {
-        color: #5b4561;
-      }
-
-      .secret {
-        cursor: pointer;
-      }
-
       .social-logo {
         height: 50px;
+        color: var(--black-or-white);
+      }
+      .social-logo-link {
+        text-decoration: none;
       }
 
-      .ferrisuwu {
-        display: none;
-        z-index: 1;
-        position: absolute;
-        right: -100px;
-        bottom: 0;
+      .header {
+        display: flex;
+        justify-content: space-between;
       }
 
-      .ferrisuwu-animate {
-        display: block;
-        animation-iteration-count: 1;
-        animation-name: ferrisuwu-enter;
-        animation-duration: 3s;
+      .header-col {
+        display: flex;
+        flex-direction: column;
       }
 
-      @keyframes ferrisuwu-enter {
-        from {
-          right: -100px;
+      .header-left {
+        align-items: flex-start;
+      }
+
+      .header-right {
+        align-items: flex-end;
+      }
+
+      .section-heading {
+        font-weight: 600;
+      }
+
+      .section-body {
+        margin-left: 3rem;
+      }
+
+      .main-content-inner {
+        counter-reset: section;
+      }
+
+      .numbered-section {
+        counter-set: subsection 1;
+      }
+      .numbered-section::before {
+        counter-increment: section;
+        content: counter(section) ". ";
+      }
+      .numbered-subsection::before {
+        content: counter(section) "." counter(subsection) ". ";
+      }
+
+      body {
+        margin-bottom: 100px;
+      }
+
+      .toc {
+        ol {
+          counter-reset: item;
+          padding-left: 10px;
         }
-        50% {
-          right: 50px;
+        li {
+          list-style: none;
+          padding-left: 0;
         }
-        to {
-          right: -100px;
+        li::before {
+          content: counters(item, ".") ".";
+          counter-increment: item;
+          padding-right: 20px;
         }
-      }
-
-      .blog-back-alley {
-        background-color: #6a1b7e;
       }
     </style>
   </head>
-  <body class="overflow-hidden">
+  <body>
     <div class="main-content">
       <div class="main-content-inner">
-        <h1>Noratrieb's website</h1>
-        <div class="columns-2">
-          <div>
-            <div>
-              <p>
-                hi, i'm nora 🏳️‍⚧️. this is my website. you'll find lots of interesting and not very
-                interesting stuff here, depending on where you look.
-              </p>
-              <p>
-                there may be many
-                <span onclick="onSecretClick()" class="secret hint" role="button">secrets</span>
-                depending on where you look....
-              </p>
-            </div>
-            <div>
-              <h2>socials</h2>
-              <p>
-                these two are not everything, but you may find more there, like a choose your own
-                adventure story: choose your own nora
-              </p>
-              <a href="https://github.com/Noratrieb">
-                <img class="social-logo" alt="GitHub" src="static/github.svg" />
-              </a>
-              <a href="https://hachyderm.io/@noratrieb">
-                <img class="social-logo" alt="Mastodon" src="static/mastodon.png" />
-              </a>
-            </div>
+        <div class="header">
+          <div class="header-col header-left">
+            <span>Noratrieb</span>
+            <span>Website: noratrieb.dev</span>
+            <span>Category: Personal Website</span>
+            <span>Published: In the past, likely</span>
+            <span>ISSN: None</span>
           </div>
-          <div>
-            <img
-              height="200"
-              src="static/Noratrieb.png"
-              alt="Two grey cartoon-cats on a pink background. The left cat is small and sits on a floating rocket, the right cat is big and has a red bow tie on the right ear."
-              style="margin-left: 15px"
-            />
+          <div class="header-col header-right">
+            <span>Noratrieb</span>
+            <span>silly internet person</span>
+            <span>it's just me no one else</span>
           </div>
         </div>
-        <div>
-          <h2>my blog</h2>
-          <p>i have a blog, it might be interesting, maybe.</p>
-          <a href="/blog" id="blog-link" class="call-to-action" aria-live="polite">
-            <span>blog</span>
-          </a>
+        <div class="center">
+          <h1>Noratrieb: it's me</h1>
         </div>
-        <div>
-          <h2>slides</h2>
-          <p>slides to talks that i have given</p>
-          <a href="/slides/index.html" class="call-to-action">
-            <span>slides from talks</span>
-          </a>
-        </div>
-        <div>
-          <h2>random projects</h2>
+        <h2 class="section-heading">Abstract</h2>
+        <div class="section-body">
           <p>
-            in addition to all the other stuff mentioned above, i also have some random projects
-            hosted on my server. they are pretty bad and i won't promote them this openly, but you
-            will be able to find them if you really want to. some people have been saying that there
-            might be a secret
-            <span role="button" class="hint" onclick="onBackalleyClick()">b</span>ack alley
-            somewhere...
+            hi, i'm nora 🏳️‍⚧️. this is my website. you'll find lots of interesting and not very
+            interesting stuff here, depending on where you look.
+          </p>
+
+          <img
+            height="200"
+            src="static/Noratrieb.png"
+            alt="Two grey cartoon-cats on a pink background. The left cat is small and sits on a floating rocket, the right cat is big and has a red bow tie on the right ear."
+          />
+        </div>
+        <h2 class="section-heading">Status of This Memo</h2>
+        <div class="section-body">
+          <p>This is a World Wide Web Hypertext document.</p>
+          <p>
+            This document is a product of Noratrieb. It represents the consensus of Noratrieb. It
+            has not received public review and has not been approved for publication by the Internet
+            Engineering Steering Group (IESG). Further information on Internet Standards is
+            available in Section 2 of RFC 7841.
           </p>
         </div>
-        <div>
-          <h2>contact me</h2>
-          <p>if you want to contact me for something, use any of the following platforms</p>
-          <ul>
+        <h2 class="section-heading">Table of Contents</h2>
+        <div class="section-body toc">
+          <ol>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#socials">Socials</a></li>
+            <li><a href="#slides">Slides</a></li>
             <li>
-              discord (preferred):
-              <pre style="display: inline">noratrieb</pre>
-              . if you're on a server where i'm too (like the Rust Discord) you can just DM me (make
-              sure to include the reason in the first message or i will ignore it)
+              <a href="#projects">Projects</a>
+              <ol>
+                <li><a href="#projects-rust">Rust</a></li>
+              </ol>
             </li>
-            <li>
-              mastodon:
-              <pre style="display: inline">@noratrieb@hachyderm.io</pre>
-            </li>
-          </ul>
-          <p>
-            if for some reason you really like being super secret then
-            <a href="https://age-encryption.org">age</a>-encrypt something with my current SSH key
-            found on <a href="https://github.com/Noratrieb.keys">GitHub</a>.
-          </p>
-          <p>i do not have a PGP key and do not intend on getting one.</p>
+            <li><a href="#contact">Contact</a></li>
+          </ol>
         </div>
+        <section id="blog">
+          <h2 class="section-heading numbered-section">Blog</h2>
+          <div class="section-body">
+            <p>i have a blog, it might be interesting, maybe.</p>
+            <a href="/blog" id="blog-link" class="call-to-action" aria-live="polite">
+              <span>blog</span>
+            </a>
+          </div>
+        </section>
+        <section id="socials">
+          <h2 class="section-heading numbered-section">Socials</h2>
+          <div class="section-body">
+            <p>
+              these two are not everything, but you may find more there, like a choose your own
+              adventure story: choose your own nora
+            </p>
+            <a class="social-logo-link" href="https://github.com/Noratrieb">
+              <svg
+                viewBox="0 0 16 16"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                class="social-logo"
+                role="img"
+                aria-label="GitHub"
+              >
+                <title>GitHub</title>
+                <path
+                  fill="currentColor"
+                  d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"
+                ></path>
+              </svg>
+            </a>
+            <a class="social-logo-link" href="https://hachyderm.io/@noratrieb">
+              <img alt="Mastodon" class="social-logo" src="static/mastodon.svg" />
+            </a>
+            <a class="social-logo-link" href="https://bsky.app/profile/noratrieb.dev">
+              <img alt="Bluesky" class="social-logo" src="static/bluesky.svg" />
+            </a>
+          </div>
+        </section>
+        <section id="slides">
+          <h2 class="section-heading numbered-section">Slides</h2>
+          <div class="section-body">
+            <p>
+              i've given some (one) talks. you can find the slides on my website, right over there.
+              i made them with reveal.js which means you can interact with them right on the web,
+              it's like magic.
+            </p>
+            <a href="/slides/" class="call-to-action">
+              <span>slides from talks</span>
+            </a>
+          </div>
+        </section>
+        <section id="projects">
+          <h2 class="section-heading numbered-section">Projects</h2>
+          <section id="projects-rust">
+            <h3 class="section-heading numbered-subsection">Rust</h3>
+            <div class="section-body">
+              <p>
+                I've spent a lot of time working on the
+                <a href="https://www.rust-lang.org/">Rust Programming Language</a> as part of the
+                compiler and standard library contributors team. My most famous work are the
+                improved <code>cfg</code> diagnostics released in
+                <a href="https://blog.rust-lang.org/2023/08/24/Rust-1.72.0/">1.72.0</a>. Other than
+                that, I've contributed countless refactors and improvements to all kinds of areas
+                from the parser to the backend. I've also reviewed hundreds of PRs for both the
+                compiler and standard library, of which only one caused a serious regression that
+                warranted a point release (<a
+                  href="https://blog.rust-lang.org/2023/12/07/Rust-1.74.1/"
+                  >1.74.1</a
+                >).
+              </p>
+            </div>
+          </section>
+          <section id="projects-other">
+            <h3 class="section-heading numbered-subsection">Other</h3>
+            <div class="section-body">
+              <p>
+                Most of my projects are only short-lived and not exciting enough to put here. I have
+                written a lot of code that does fun things. You can find it all on my
+                <a href="https://github.com/Noratrieb/">GitHub</a>.
+              </p>
+            </div>
+          </section>
+        </section>
+        <section id="contact">
+          <h2 class="section-heading numbered-section">Contact</h2>
+          <div class="section-body">
+            <p>if you want to contact me for something, use any of the following platforms</p>
+            <ul>
+              <li>
+                discord (preferred):
+                <code>noratrieb</code>
+                . if you're on a server where i'm too (like the Rust Discord) you can just DM me
+                (make sure to include the reason in the first message or i will ignore it)
+              </li>
+              <li>
+                Mastodon:
+                <code>@noratrieb@hachyderm.io</code>
+              </li>
+              <li>
+                Bluesky:
+                <code>noratrieb.dev</code>
+              </li>
+            </ul>
+            <p>
+              if for some reason you really like being super secret then
+              <a href="https://age-encryption.org">age</a>-encrypt something with my current SSH key
+              found on <a href="https://github.com/Noratrieb.keys">GitHub</a>.
+            </p>
+            <p>i do not have a PGP key and do not intend on getting one.</p>
+          </div>
+        </section>
       </div>
     </div>
-
-    <div class="overflow-hidden">
-      <img id="ferrisuwu" class="ferrisuwu" src="static/ferrisuwu.webp" />
-    </div>
-
-    <script>
-      let clickCount = 0;
-      let ferrisuwuAnimating = false;
-      const ferrisuwu = document.getElementById("ferrisuwu");
-      function onSecretClick() {
-        clickCount++;
-        if (clickCount > 0 && !ferrisuwuAnimating) {
-          ferrisuwu.classList.add("ferrisuwu-animate");
-          ferrisuwuAnimating = true;
-          setTimeout(() => {
-            ferrisuwu.classList.remove("ferrisuwu-animate");
-            ferrisuwuAnimating = false;
-          }, 3000);
-        }
-      }
-
-      const blog = document.getElementById("blog-link");
-      let isBKeyDown = false;
-      function activateBackalley() {
-        isBKeyDown = true;
-        blog.classList.add("blog-back-alley");
-        blog.href = "/" + "{{ back_alley_name }}";
-        blog.children[0].innerText = "blog?";
-      }
-      function deactivateBackalley() {
-        isBKeyDown = false;
-        blog.classList.remove("blog-back-alley");
-        blog.href = "/blog";
-        blog.children[0].innerText = "blog";
-      }
-      let backalleyClicks = 0;
-      function onBackalleyClick() {
-        backalleyClicks++;
-        if (backalleyClicks > 1) {
-          activateBackalley();
-        }
-      }
-      document.addEventListener("keydown", (ev) => {
-        const B = 66;
-        if (ev.keyCode === B) {
-          activateBackalley();
-        }
-      });
-      document.addEventListener("keyup", (ev) => {
-        const B = 66;
-        if (ev.keyCode === B) {
-          deactivateBackalley();
-        }
-      });
-    </script>
   </body>
 </html>

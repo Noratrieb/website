@@ -1,11 +1,9 @@
 html {
-  --accept-color: #e5a5c2;
+  --accent-color: #e5a5c2;
 }
 
 body {
   font-family: Verdana, sans-serif;
-  background-color: #e6dae9;
-  color: #1b191c;
 }
 
 .main-content {
@@ -29,7 +27,7 @@ body {
 .call-to-action {
   width: 250px;
   height: 50px;
-  background-color: var(--accept-color);
+  background-color: var(--accent-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,7 +54,6 @@ body {
   flex-direction: row;
 }
 
-
 @media (max-width: 1000px) {
   .columns-2 {
     display: block;
@@ -64,29 +61,35 @@ body {
   }
 }
 
-
 @media (prefers-color-scheme: light) {
   body {
-    background-color: #e6dae9;
-    color: #1b191c;
-  }
-
-  .secret {
-    color: #5b4561;
+    --background-color: #e6dae9;
+    --foreground-color: #1b191c;
+    --black-or-white: black;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #1b191c;
-    color: #e6dae9;
+    --background-color: #1b191c;
+    --foreground-color: #e6dae9;
+    --black-or-white: white;
   }
 
   a {
-    color: var(--accept-color);
+    color: var(--accent-color);
   }
+}
 
-  .secret {
-    color: #a081a9;
-  }
+body {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+a {
+  text-decoration: underline;
 }
