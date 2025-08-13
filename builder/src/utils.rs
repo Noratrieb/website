@@ -2,7 +2,12 @@ use color_eyre::{
     eyre::{bail, Context},
     Result,
 };
-use std::{fs, io, os::unix::ffi::OsStrExt, path::{Path, PathBuf}, process::Command};
+use std::{
+    fs, io,
+    os::unix::ffi::OsStrExt,
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 pub fn run_process(cmd: &mut Command) -> Result<String> {
     fn run_process_inner(cmd: &mut Command) -> Result<String> {
@@ -29,15 +34,6 @@ pub fn run_process(cmd: &mut Command) -> Result<String> {
             .collect::<Vec<_>>()
             .join(" ")
     ))
-}
-
-pub fn create_dir_if_not_exist(p: &Path) -> Result<()> {
-    match std::fs::create_dir(p) {
-        Ok(()) => debug!(?p, "Created directory"),
-        Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {}
-        e => return e.wrap_err("failed to create submodules"),
-    }
-    Ok(())
 }
 
 pub fn cp_r(from: &Path, to: &Path) -> Result<()> {

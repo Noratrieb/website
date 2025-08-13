@@ -1,9 +1,0 @@
-[[submodule]]
-name = "blog"
-url = "https://github.com/Noratrieb/blog.git"
-commit = "3f1978cc85668495bc5a9ac43d5c44fa844c97d6"
-
-[[submodule]]
-name = "slides"
-url = "https://github.com/Noratrieb/slides.git"
-commit = "0401f35c22b124b69447655f0c537badae9e223c"

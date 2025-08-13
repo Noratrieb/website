@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>how to contribute to the Rust project</title>
+
+		<link rel="stylesheet" href="../dist/reset.css">
+		<link rel="stylesheet" href="../dist/reveal.css">
+		<link rel="stylesheet" href="../dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="../plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>how to contribute to the Rust project</section>
+				<section>
+					<h2>whoami</h2>
+					<div style="display: flex;">
+						<div>
+							<div>Nilstrieb (he/him)</div>
+							<ul>
+								<li>contributing since 2021</li>
+								<li>compiler contributors team since 2022</li>
+								<li>all areas of the compiler</li>
+								<li>issue triaging</li>
+								<li>1.72 cargo feature cfg diagnostics</li>
+							</ul>
+							<br>
+						</div>
+						<div>
+							<img src="me.png" height="300">
+						</div>
+					</div>
+				</section>
+				<section>
+					<img src="me-cfg-errors.png">
+				</section>
+				<section>
+					<h2>reviewed &hearts;</h2>
+					<div style="display: grid; grid-template-columns: 70% auto; align-items: center;">
+					<div>compiler-errors, style team member</div>
+					<img height="110" src="compiler-errors.jpeg">
+					<div>WaffleLapkin, the most non-binary compiler contributor</div>
+					<img height="110" src="waffle.jpeg">
+					<div>jyn514, the gayest alumni of the bootstrap team</div>
+					<img height="110" src="jyn.jpeg">
+					<div>lunasorcery, friend of the above</div>
+					<img height="110" src="luna.jpeg">
+					</div>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## i want to contribute
+
+						- don't need to be an expert!
+						- time and interest
+					</textarea>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						# what to contribute?
+					</textarea>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						# not writing code
+					</textarea>
+				</section>
+				<section>
+					<h2>thanks.rust-lang.org</h2>
+					<img src="thanks-rlo.png">
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## triaging issues
+
+						easy to get started
+
+						- labelling
+						- minimization
+						- bisecting
+						- adding tests
+					</textarea>
+				</section>
+				<section>
+					<h2>labelling</h2>
+					<img src="triage-issue-description.png">
+				</section>
+				<section>
+					<h2>labelling</h2>
+					<img src="triage-labels.png">
+					<a href="https://forge.rust-lang.org/release/issue-triaging.html">https://forge.rust-lang.org/release/issue-triaging.html</a>
+				</section>
+				<section>
+					<h2 style="display: flex; justify-content: center; align-items: center;">bisection <img src="E-needs-bisection.png" height="60"></h2>
+					<img src="triage-bisect-issue.png">
+				</section>
+				<section>
+					<h2>bisection</h2>
+					<pre><code data-triM>
+						$ cargo new bisect
+							Created binary (application) `bisect` package
+						$ cd bisect
+						$ vim src/main.rs 
+						$ cargo-bisect-rustc --access github --regress ice \
+							--start 2023-01-01 --end 2023-12-19
+					</code></pre>
+					<a href="https://github.com/rust-lang/cargo-bisect-rustc">https://github.com/rust-lang/cargo-bisect-rustc</a>
+					<div>downloads toolchains instead of building them</div>
+				</section>
+				<section>
+					<h2>bisection</h2>
+					<img src="triage-bisect-comment.png">
+				</section>
+				<section>
+					<h2 style="display: flex; justify-content: center; align-items: center;">minimization <img src="E-needs-mcve.png" height="60"></h2>
+					<div>very useful for fixing an issue</div>
+					<img src="triage-min-issue.png">
+				</section>
+				<section>
+					<!-- 
+						Learn more things about Rust
+						Can be the start for doing a fix yourself
+					 -->
+					<h2>minimization</h2>
+					<p>I minimized that issue to 60 lines in 2 hours</p>
+					<a href="https://github.com/Nilstrieb/ice-104649">https://github.com/Nilstrieb/ice-104649</a>
+					<a href="http://blog.pnkfx.org/blog/2019/11/18/rust-bug-minimization-patterns/">http://blog.pnkfx.org/blog/2019/11/18/rust-bug-minimization-patterns/</a>
+					<br>
+					<a href="https://github.com/Nilstrieb/cargo-minimize">https://github.com/Nilstrieb/cargo-minimize</a>
+				</section>
+				<section>
+					<h2 style="display: flex; justify-content: center; align-items: center;">adding tests <img src="E-needs-test.png" height="60"></h2>
+					<p>bug has been fixed, but no test added</p>
+					<p>just commit a test to close the issue!</p>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## existing unstable features
+
+						- stabilize
+						- close
+					</textarea>
+				</section>
+				<section>
+					<h2 style="display: flex; justify-content: center; align-items: center;">tracking issues<img src="C-tracking-issue.png" height="60"></h2>
+					<p>tracking the state of a feature</p>
+					<p>719 issues (2023-01-03)</p>
+					<p>new issues aren't ready yet</p>
+					<p>really old issues often have problems</p>
+					<p>go to golden middle :)</p>
+				</section>
+				<section>
+					<h2>summarize,</h2>
+					<p>aggregate <b>open</b> questions</p>
+					<p>aggregate <b>resolved</b> questions</p>
+					<p>propose next steps</p>
+				</section>
+				<section>
+					<h2>stabilize...</h2>
+					<img src="stabilize-report.png">
+				</section>
+				<section>
+					<h2>...or close</h2>
+				</section>
+				<section>
+					<h2>final comment periods</h2>
+					<img src="stabilize-fcp.png">
+				</section>
+				<section>
+					<h2>writing code</h2>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## official tooling
+
+						always in need of help!
+
+						- clippy
+						- rust-analyzer
+						- cargo
+						- rustup
+						- rustfmt
+					</textarea>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## standard library
+
+						limited review bandwidth!
+
+						- improve documentation
+						- performance improvements
+						- bug fixes
+						- APIs are selective
+					</textarea>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## compiler contributions
+
+						- diagnostics are a great starting point (A-diagnostics)
+						- internal compiler error fixes
+						- E-{mentor,easy} labels
+					</textarea>
+				</section>
+				<section>
+					<h2>examples of my PRs</h2>
+					<img src="my-first.png">
+					<a href="https://github.com/rust-lang/rust/pull/89892">https://github.com/rust-lang/rust/pull/89892</a>
+				</section>
+				<section>
+					<h2>examples of my PRs</h2>
+					<img src="my-let-underscore-lock.png">
+					<a href="https://github.com/rust-lang/rust/pull/119710">https://github.com/rust-lang/rust/pull/119710</a>
+				</section>
+				<section>
+					<h2>examples of my PRs</h2>
+					<img src="my-clippy-needless-borrow.png">
+					<a href="https://github.com/rust-lang/rust/pull/118143">https://github.com/rust-lang/rust/pull/118143</a>
+				</section>
+				<section>
+					<h2>examples of my PRs</h2>
+					<img src="my-carbon-hashing.png">
+					<a href="https://github.com/rust-lang/rust/pull/117079">https://github.com/rust-lang/rust/pull/117079</a>
+				</section>
+				<section>
+					<h2>rustc dev guide</h2>
+					<a href="https://rustc-dev-guide.rust-lang.org/">https://rustc-dev-guide.rust-lang.org/</a>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## looking at prs
+
+						- learn more about what other people are doing
+						- leave review comments if you see something
+					</textarea>
+				</section>
+				<section data-markdown>
+					<textarea data-template>
+						## to remember
+
+						- volunteers
+						- review times sometimes long (weeks)
+						- rust-lang/rust: ping if review >2 weeks
+					</textarea>
+				</section>
+				<section>
+					<h2>ask for help</h2>
+					<p>rust-lang.zulipchat.com</p>
+				</section>
+				<section>
+					<h2>see you on GitHub!</h2>
+					<a href="https://rustc-dev-guide.rust-lang.org/">https://rustc-dev-guide.rust-lang.org/</a>
+					<a href="https://forge.rust-lang.org/release/issue-triaging.html">https://forge.rust-lang.org/release/issue-triaging.html</a>
+					<a href="https://github.com/rust-lang/cargo-bisect-rustc">https://github.com/rust-lang/cargo-bisect-rustc</a>
+					<a href="http://blog.pnkfx.org/blog/2019/11/18/rust-bug-minimization-patterns/">http://blog.pnkfx.org/blog/2019/11/18/rust-bug-minimization-patterns/</a>
+					<br>
+					<a href="https://github.com/Nilstrieb/cargo-minimize">https://github.com/Nilstrieb/cargo-minimize</a>
+					<a href="https://rust-lang.zulipchat.com">rust-lang.zulipchat.com</a>
+				</section>
+			</div>
+		</div>
+
+		<script src="../dist/reveal.js"></script>
+		<script src="../plugin/notes/notes.js"></script>
+		<script src="../plugin/markdown/markdown.js"></script>
+		<script src="../plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>

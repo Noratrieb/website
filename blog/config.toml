@@ -1,0 +1,15 @@
+baseURL = "/blog/"
+languageCode = "en-us"
+title = "Noratrieb's blog"
+theme = "terminal"
+
+[params]
+contentTypeName = "posts"
+centerTheme = true
+
+[params.logo]
+logoText = "noratrieb's blog"
+
+# Let me use HTML :3
+[markup.goldmark.renderer]
+unsafe = true

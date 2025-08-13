@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> { }, slides ? null, blog ? null, ... }:
+{ pkgs ? import <nixpkgs> { }, ... }:
 let
   generator = import ./builder { inherit pkgs; };
 in
@@ -7,9 +7,6 @@ pkgs.stdenv.mkDerivation {
 
   src = ./.;
   unpackSrc = false;
-
-  SUBMODULE_DIR_SLIDES = slides;
-  SUBMODULE_DIR_BLOG = blog;
 
   WEBSITE_RNG_SEED = "99";
 

@@ -14,26 +14,19 @@ pub fn assemble_website(
     rng: &mut rand::rngs::StdRng,
     config: &Config,
     statics: &Path,
-    submodules: &Path,
+    root: &Path,
     dist: &Path,
 ) -> Result<()> {
-    blog::build(&submodules.join("blog"), &dist.join("blog")).wrap_err("building blog")?;
+    blog::build(&root.join("blog"), &dist.join("blog")).wrap_err("building blog")?;
     slides::build(
         &config.slides,
-        &submodules.join("slides"),
+        &root.join("slides"),
         &dist.join("slides"),
     )
     .wrap_err("building slides")?;
 
     statics::build(rng, &config.slides, statics, dist).wrap_err("building root files")?;
 
-    add_cname(dist)?;
-
     Ok(())
 }
 
-fn add_cname(dist: &Path) -> Result<()> {
-    let cname = "nilstrieb.dev\n";
-    std::fs::write(dist.join("CNAME"), cname).wrap_err("writing cname")?;
-    Ok(())
-}

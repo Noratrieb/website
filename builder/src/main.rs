@@ -1,5 +1,4 @@
 mod build;
-mod submodule;
 mod utils;
 
 #[macro_use]
@@ -164,21 +163,8 @@ fn build(rng: &mut rand::rngs::StdRng, root: &Path) -> Result<()> {
         talk.dir_name = talk.dir_name();
     });
 
-    let sub_config = std::fs::read_to_string(root.join("submodules.toml"))
-        .wrap_err("reading submodules.toml")?;
-    let sub_config =
-        submodule::Submodules::parse(&sub_config).wrap_err("invalid submodules.toml")?;
-    let submodules_path = root.join("submodules");
-    submodule::sync(&submodules_path, &sub_config).wrap_err("syncing submodules")?;
-
     let dist_path = root.join("dist");
-    build::assemble_website(
-        rng,
-        &config,
-        &root.join("static"),
-        &submodules_path,
-        &dist_path,
-    )?;
+    build::assemble_website(rng, &config, &root.join("static"), &root, &dist_path)?;
 
     Ok(())
 }
