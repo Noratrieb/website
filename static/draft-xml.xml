@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<?rfc toc="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc compact="yes"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<?rfc linkmailto="no" ?>
+<?rfc rfcedstyle="yes"?>
+<?rfc-ext allow-markup-in-artwork="yes" ?>
+<?rfc-ext include-references-in-index="yes" ?>
+<!DOCTYPE rfc []>
+<!-- Notes for Paul and Tony
+
+Have a section that is just examples of what is new in v3 (such as new table features)
+	Want to add examples of <blockquote>
+		Example of a cite for a reference that is already in the spec.
+	In the v3-only examples, use "ascii" attributes liberally
+
+-->
+<rfc ipr="trust200902" docName="noratrieb" category="info">
+    <front>
+        <title>Noratrieb: it's me</title>
+        <author  fullname="Noratrieb">
+            <organization>silly internet person</organization>
+        </author>
+        <date/>
+        <abstract>
+            <t>
+           hi, i'm nora 🏳️‍⚧️. this is my website. you'll find lots of interesting and not very interesting stuff here, depending on where you look.       </t>
+        </abstract>
+    </front>
+    <middle>
+        <section title="Blog">
+            <t>i have a blog, it might be interesting, maybe.</t>
+            <t>https://noratrieb.dev/blog</t>
+        </section>
+        <section title="Socials">
+            <t>
+                these two are not everything, but you may find more there, like a choose your own adventure story: choose your own nora 
+            </t>
+            <ul>
+                <li>GitHub: https://github.com/Noratrieb</li>
+                <li>Mastodon: https://hachyderm.io/@noratrieb</li>
+                <li>BlueSky: https://bsky.app/profile/noratrieb.dev</li>
+            </ul>
+        </section>
+        <section title="Slides">
+            <t>
+            i've given some (one) talks. you can find the slides on my website, right over there. i made them with reveal.js which means you can interact with them right on the web, it's like magic.
+            </t>
+            <t>https://noratrieb.dev/slides/</t>
+        </section>
+        <section title="Projects">
+            <section title="Rust">
+                <t>
+                    I've spent a lot of time working on the Rust Programming Language as part of the compiler and standard library contributors team. My most famous work are the improved cfg diagnostics released in 1.72.0. Other than that, I've contributed countless refactors and improvements to all kinds of areas from the parser to the backend. I've also reviewed hundreds of PRs for both the compiler and standard library, of which only one caused a serious regression that warranted a point release (1.74.1).
+                </t>
+            </section>
+            <section title="Other">
+                <t>Most of my projects are only short-lived and not exciting enough to put here. I have written a lot of code that does fun things. You can find it all on my GitHub.</t>
+            </section>
+        </section>
+        <section title="Contact">
+            <t>if you want to contact me for something, use any of the following platforms</t>
+            <ul>
+                <li>discord (preferred): noratrieb . if you're on a server where i'm too (like the Rust Community Discord) you can just DM me (make sure to include the reason in the first message or i will ignore it) </li>
+                <li>Mastodon: @noratrieb@hachyderm.io </li>
+                <li>Bluesky: noratrieb.dev </li>
+            </ul>
+            <t> if for some reason you really like being super secret then age-encrypt something with my current SSH key found on GitHub. </t>
+            <t>i do not have a PGP key and do not intend on getting one.</t>
+        </section>
+    </middle>
+    <back></back>
+</rfc>

@@ -1,0 +1,168 @@
+
+
+
+
+Noratrieb                                                      Noratrieb
+Website: noratrieb.dev                             silly internet person
+Category: Personal Website                      it's just me no one else
+Published: In the past, likely
+ISSN: None
+
+                           Noratrieb: it's me
+                               noratrieb
+
+Abstract
+
+   hi, i'm nora 🏳️‍⚧️. this is my website. you'll find lots of
+   interesting and not very interesting stuff here, depending on where
+   you look.
+
+Status of This Memo
+
+   This is a World Wide Web Hypertext document.
+
+
+   This document is a product of Noratrieb. It represents the consensus
+   of Noratrieb. It has not received public review and has not been
+   approved for publication by the Internet Engineering Steering
+   Group (IESG). Further information on Internet Standards is
+   available in Section 2 of RFC 7841. 
+
+Copyright Notice
+
+   Copyright (c) Noratrieb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Noratrieb                  In the past, likely                  [Page 1]
+
+Personal Website           Noratrieb: it's me        In the past, likely
+
+
+Table of Contents
+
+   1.  Blog  . . . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Socials . . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Slides  . . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   4.  Projects  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+     4.1.  Rust  . . . . . . . . . . . . . . . . . . . . . . . . . .   2
+     4.2.  Other . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   5.  Contact . . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   3
+
+1.  Blog
+
+   i have a blog, it might be interesting, maybe.
+
+   https://noratrieb.dev/blog
+
+2.  Socials
+
+   these two are not everything, but you may find more there, like a
+   choose your own adventure story: choose your own nora
+
+   *  GitHub: https://github.com/Noratrieb
+
+   *  Mastodon: https://hachyderm.io/@noratrieb
+
+   *  BlueSky: https://bsky.app/profile/noratrieb.dev
+
+3.  Slides
+
+   i've given some (one) talks. you can find the slides on my website,
+   right over there. i made them with reveal.js which means you can
+   interact with them right on the web, it's like magic.
+
+   https://noratrieb.dev/slides/
+
+4.  Projects
+
+4.1.  Rust
+
+   I've spent a lot of time working on the Rust Programming Language as
+   part of the compiler and standard library contributors team.  My most
+   famous work are the improved cfg diagnostics released in 1.72.0.
+   Other than that, I've contributed countless refactors and
+   improvements to all kinds of areas from the parser to the backend.
+   I've also reviewed hundreds of PRs for both the compiler and standard
+   library, of which only one caused a serious regression that warranted
+   a point release (1.74.1).
+
+
+
+Noratrieb                  In the past, likely                  [Page 2]
+
+Personal Website           Noratrieb: it's me        In the past, likely
+
+
+4.2.  Other
+
+   Most of my projects are only short-lived and not exciting enough to
+   put here.  I have written a lot of code that does fun things.  You
+   can find it all on my GitHub.
+
+5.  Contact
+
+   if you want to contact me for something, use any of the following
+   platforms
+
+   *  discord (preferred): noratrieb . if you're on a server where i'm
+      too (like the Rust Community Discord) you can just DM me (make
+      sure to include the reason in the first message or i will ignore
+      it)
+
+   *  Mastodon: @noratrieb@hachyderm.io
+
+   *  Bluesky: noratrieb.dev
+
+   if for some reason you really like being super secret then age-
+   encrypt something with my current SSH key found on GitHub.
+
+   i do not have a PGP key and do not intend on getting one.
+
+Author's Address
+
+   Noratrieb
+      
+      https://noratrieb.dev/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Noratrieb                  In the past, likely                  [Page 3]
