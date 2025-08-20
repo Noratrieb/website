@@ -8,8 +8,8 @@ Category: Personal Website                      it's just me no one else
 Published: In the past, likely
 ISSN: None
 
+
                            Noratrieb: it's me
-                               noratrieb
 
 Abstract
 
@@ -21,7 +21,6 @@ Status of This Memo
 
    This is a World Wide Web Hypertext document.
 
-
    This document is a product of Noratrieb. It represents the consensus
    of Noratrieb. It has not received public review and has not been
    approved for publication by the Internet Engineering Steering
@@ -31,32 +30,6 @@ Status of This Memo
 Copyright Notice
 
    Copyright (c) Noratrieb
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Noratrieb                  In the past, likely                  [Page 1]
-
-Personal Website           Noratrieb: it's me        In the past, likely
-
 
 Table of Contents
 
@@ -107,13 +80,6 @@ Table of Contents
    library, of which only one caused a serious regression that warranted
    a point release (1.74.1).
 
-
-
-Noratrieb                  In the past, likely                  [Page 2]
-
-Personal Website           Noratrieb: it's me        In the past, likely
-
-
 4.2.  Other
 
    Most of my projects are only short-lived and not exciting enough to
@@ -144,25 +110,3 @@ Author's Address
    Noratrieb
       
       https://noratrieb.dev/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Noratrieb                  In the past, likely                  [Page 3]
