@@ -277,8 +277,8 @@ fn main() { math::add() }
           </code></pre>
             <pre><code data-trim class="language-rust">
             fn main() {
-              add(0_u16, 0_u16);
-              add(0_u32, 0_u32);
+              math::add(0_u16, 0_u16);
+              math::add(0_u32, 0_u32);
             }
           </code></pre>
           </div>
@@ -328,30 +328,6 @@ fn main() { math::add() }
             ## inlining
 
             ```rust
-            fn main() {
-              let x = 1 + 4;
-              println!("{x}");
-            }
-            ```
-          </textarea>
-        </section>
-        <section data-markdown>
-          <textarea data-template>
-            ## inlining
-
-            ```rust
-            fn main() {
-              let x = 5;
-              println!("{x}");
-            }
-            ```
-          </textarea>
-        </section>
-        <section data-markdown>
-          <textarea data-template>
-            ## inlining
-
-            ```rust
             fn add(a: u8, b: u8) -> u8 {
               a + b
             }
@@ -385,18 +361,192 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## inlining
+            ## cross-crate inlining
 
             ```rust
             fn add(a: u8, b: u8) -> u8 {
               a + b
             }
-
+            ```
+            ```rust
             fn main() {
-              let x = 5;
+              let x = add(1, 4); // what is the body?...
               println!("{x}");
             }
             ```
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## #[inline] to the rescue
+
+            ```rust
+            #[inline]
+            fn add(a: u8, b: u8) -> u8 {
+              a + b
+            }
+            ```
+            ```rust
+            fn main() {
+              let x = add(1, 4); // 💡 it's a + b
+              println!("{x}");
+            }
+            ```
+          </textarea>
+        </section>
+        <section>
+          <div style="display: flex; flex-direction: row; gap: 16px">
+            <pre><code data-trim class="language-rust">
+            #[inline]
+            fn add(a: u8, b: u8) -> u8 {
+              a + b
+            }
+          </code></pre>
+            <pre><code data-trim class="language-rust">
+            fn main() {
+              let x = add(1, 4);
+              println!("{x}");
+            }
+          </code></pre>
+          </div>
+          <div class="mermaid">
+            <pre>
+              %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
+              flowchart LR
+                subgraph crate math
+                  addmir["add (MIR)"]
+                end
+
+                subgraph my crate
+                  mainmir["main (MIR)"]
+                end
+
+                subgraph my crate
+                  subgraph mycgu1[my CGU 1]
+                    addll["add (LLVM IR)"]
+                    mainll["main (LLVM IR)"]
+                  end
+
+                  mainmir --> mainll
+                  addmir --> addll
+                  mycgu1 --> mycgu1.rcgu.o
+                  mycgu1.rcgu.o --> my_binary
+                  std["std (and others)"] --> my_binary
+                end
+            </pre>
+          </div>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## `#[inline]`
+            - `#[inline]` enables cross-crate inlining of non-generic functions
+            - for very small functions, this happens automatically
+            - for other functions, it doesn't, because it would be slow
+            - don't over-apply it in a library, but also don't forget about it
+            - benchmark!
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## but i wan't maximal performance...
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## link-time optimization (LTO)
+
+            - optimizes everything in your program together at the end
+            - breaks crate boundaries
+            - is awesome
+            - is slow
+            - comes in many forms
+          </textarea>
+        </section>
+        <section>
+          <h2>lto = "fat"</h2>
+          <div class="mermaid">
+            <pre>
+              %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
+              flowchart LR
+                subgraph crate math
+                  addmir["add (LLVM IR)"]
+                end
+                subgraph crate math2
+                  submir["sub (LLVM IR)"]
+                end
+
+                subgraph my crate
+                  mainmir["main (LLVM IR)"]
+                end
+
+                subgraph my crate
+                  subgraph fatlto[fat LTO]
+                    addll["add (LLVM IR)"]
+                    subll["sub (LLVM IR)"]
+                    mainll["main (LLVM IR)"]
+                  end
+
+                  mainmir --> mainll
+                  addmir --> addll
+                  submir --> subll
+
+                  fatlto --> my_binary
+                end
+            </pre>
+          </div>
+        </section>
+        <section>
+          <h2>lto = "thin"</h2>
+          <div class="mermaid">
+            <pre>
+              %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
+              flowchart LR
+                subgraph crate math
+                  addmir["add (LLVM IR)"]
+                end
+                subgraph crate math2
+                  submir["sub (LLVM IR)"]
+                end
+
+                subgraph my crate
+                  mainmir["main (LLVM IR)"]
+                end
+
+                subgraph my crate
+                  subgraph thinltosummary[ThinLTO Summary]
+                  end
+                  
+                  subgraph thinlto1[ThinLTO 1]
+                    addll["add (LLVM IR)"]
+                    subll["sub (LLVM IR)"]
+                  end
+                  subgraph thinlto2[ThinLTO 2]
+                    mainll["main (LLVM IR)"]
+                  end
+
+                  mainmir --> thinltosummary
+                  addmir --> thinltosummary
+                  submir --> thinltosummary
+
+                  thinltosummary --> mainll
+                  thinltosummary --> addll
+                  thinltosummary --> subll
+
+                  thinlto1 --> my_binary
+                  thinlto2 --> my_binary
+                end
+            </pre>
+          </div>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## linker-plugin-lto
+
+            - "original" LTO
+            - like fat LTO
+            - the merging is not done by rustc but by the linker
+            - works across languages (Rust (rustc) + C (clang))
+            - great for FFI
           </textarea>
         </section>
       </div>
