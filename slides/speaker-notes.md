@@ -18,7 +18,6 @@
     - resolve, typecheck
 - MIR
     - intermediate representation
-    - CFG
     - borrow checker
 - LLVM IR
     - LLVM backend
@@ -71,6 +70,7 @@
     - dont always use it because its slow
     - dont forget about it
     - benchmark
+    - todo
 - if you dont want to worry about this as an application
 - LTO
     - no cross-crate-inline-threshold

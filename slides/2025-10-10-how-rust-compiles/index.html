@@ -584,6 +584,41 @@ fn main() { math::add() }
             - annoying to set up
           </textarea>
         </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## inlining across codegen units in the same crate
+
+            - ThinLTO across different codegen units by default
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## `Cargo.toml` config
+
+            ```toml
+            [profile.release]
+            lto = "thin"
+            codegen-units = 1
+            ```
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## and why did `#[inline]` make the error go away?
+
+            ```rust
+            pub fn error() {
+                //           vvvvvvvvvvv post-mono error!
+                let _x: [u8; usize::MAX] = [0; usize::MAX];
+            }
+            ```
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## happy compiling
+          </textarea>
+        </section>
       </div>
     </div>
 
