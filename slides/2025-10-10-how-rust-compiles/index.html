@@ -35,7 +35,7 @@
               <iframe
                 height="600"
                 width="800"
-                src="https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=7ac62650fd0b942ae5952b0027e0c1ce"
+                src="https://play.integer32.com/?version=stable&mode=debug&edition=2024&gist=7ac62650fd0b942ae5952b0027e0c1ce"
                 referrerpolicy="no-referrer"
               ></iframe>
             </details>
@@ -483,7 +483,7 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## but i wan't maximal performance...
+            ## but i want maximal performance...
           </textarea>
         </section>
         <section data-markdown>
@@ -498,7 +498,7 @@ fn main() { math::add() }
           </textarea>
         </section>
         <section>
-          <h2>lto = "fat"</h2>
+          <h2>lto = "fat" (monolithic)</h2>
           <div class="mermaid">
             <pre>
               %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
@@ -531,7 +531,7 @@ fn main() { math::add() }
           </div>
         </section>
         <section>
-          <h2>lto = "thin"</h2>
+          <h2>lto = "thin" (sharded)</h2>
           <div class="mermaid">
             <pre>
               %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
