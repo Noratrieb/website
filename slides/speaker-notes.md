@@ -1,0 +1,101 @@
+# how rust compiles
+
+- welcome to my talk about how rust compiles
+    - we'll take a look at rusts compilation model
+- before we get started
+    - example of confusing behavior arising from the model
+- me
+- behind cargo build
+    - we use cargo
+    - one cargo many rustc per crate
+    - use -v
+- what does rustc do
+- source example
+    - add function that adds
+- frontend and backend
+- frontend in a single slide
+    - parse into AST
+    - resolve, typecheck
+- MIR
+    - intermediate representation
+    - CFG
+    - borrow checker
+- LLVM IR
+    - LLVM backend
+    - clang, swift, julia
+    - IR to assembly
+    - optimizes
+- Assembly
+    - machine code
+- it's not that simple
+- backend orchestration
+    - how, what, and when invoking LLVM
+- codegen unit
+    - LLVM module/object file
+    - group of functions
+    - linked together
+- more codegen units
+    - three functions into two codegen units
+    - functions grouped into codegen units is complicated
+- codegen units cross crate
+    - a great add function
+    - add into cgu in math crate
+    - object file into rlibs
+- generics
+    - mono
+- instantiating generics
+    - MIR to LLVM IR
+- generics cross crate
+    - math crate only MIR
+    - instantiated in our own crate
+    - read MIR from rlib
+- inlining
+    - a function call
+    - inefficient call
+    - maybe just turn it into 5
+- inlining
+    - very good
+    - everywhere, or very slow
+- cross crate inlining catch
+    - access to the body
+- #[inline]
+    - why?
+- #[inline]
+    - like a generic function
+    - instantiated downstream
+- #[inline]
+    - non-generic
+    - automatically for small
+    - not for others
+    - cross-crate-inline-threshold=always
+    - dont always use it because its slow
+    - dont forget about it
+    - benchmark
+- if you dont want to worry about this as an application
+- LTO
+    - no cross-crate-inline-threshold
+    - LTO
+    - applies optimizations once for everything at the end
+    - breaks crate boundaries
+    - slow
+- fat LTO
+    - LLVM IR instead of machine code in libs
+    - combines all LLVM IR
+    - this CGU is huge, not parallel
+    - see everything
+    - not all optimizations for larger programs
+- thin LTO
+    - confusing name
+    - try both
+    - LLVM IR for libs
+    - for generics, just in instantiating crate
+    - combine for summary
+    - summary of function (size and where to find it)
+    - many different units in parallel
+    - look at the summary for inlining
+- linker plugin LTO
+    - fat LTO or thin LTO
+    - not by rustc, but by the linker
+    - across languages
+    - LLVM IR from Rust, LLVM IR from clang
+    - annoying to set up

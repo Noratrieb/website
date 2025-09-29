@@ -25,7 +25,8 @@
     <div class="reveal">
       <div class="slides">
         <section>
-          <h2>how rust compiles</h2>
+          <h2>how Rust compiles</h2>
+          <h4>i promise it's actually doing something useful while you wait</h4>
         </section>
         <section style="height: 100%">
           <div style="display: flex; align-items: flex-start; height: 100%">
@@ -34,7 +35,7 @@
               <iframe
                 height="600"
                 width="800"
-                src="https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=aa4567f7a97dd255dc4f314ae2b5d63c"
+                src="https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=7ac62650fd0b942ae5952b0027e0c1ce"
                 referrerpolicy="no-referrer"
               ></iframe>
             </details>
@@ -58,7 +59,7 @@
           <p>cargo vs rustc</p>
           <div style="display: grid; grid-template-columns: 2fr 1fr 2fr">
             <pre><code data-trim>
-                    $ cargo build
+                    $ cargo build -v
                 </code></pre>
             <div style="display: flex; align-items: center">cargo</div>
             <div style="display: flex; flex-direction: column; align-items: flex-start">
@@ -70,17 +71,49 @@
           </div>
         </section>
         <section>
-          <h2>so you want to compile a crate</h2>
+          <h2>what does rustc like, do?</h2>
+          <h4>a quick overview of the compilation phases</h4>
         </section>
         <section>
-          <h2>so you want to compile a crate</h2>
-          <p>source code:</p>
+          <h2>it all starts at the source</h2>
           <pre><code data-trim>
               #[no_mangle]
               pub fn add(a: u8, b: u8) -> u8 {
                 a.wrapping_add(b)
               }
             </code></pre>
+        </section>
+        <section>
+          <h2>the frontend and the backend</h2>
+          <div class="mermaid">
+            <pre>
+              %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
+              flowchart LR
+                subgraph compiler
+                  frontend --> backend
+                end
+                source --> frontend
+                backend --> binary
+            </pre>
+          </div>
+        </section>
+        <section>
+          <h2>lex, parse, resolve, typecheck, all these fancy things</h2>
+          <div class="mermaid">
+            <pre>
+              %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
+              flowchart TB
+                function --> return
+                function --> params
+                params --> a_def[a]
+                params --> b_def[b]
+                function --> body
+                body --> cl["method call"]
+                cl --> a_use[a]
+                cl --> wrapping_add
+                cl --> b_use[b]
+            </pre>
+          </div>
         </section>
         <section>
           <h2>so you want to compile a crate</h2>
@@ -114,6 +147,20 @@
           ```
           </textarea>
         </section>
+        <section data-markdown>
+          <textarea data-template>
+          ## but compiling a ton of crates can't be that simple!
+
+          - yes
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+          ## backend orchestration
+
+          - the how, what, and when of invoking LLVM
+          </textarea>
+        </section>
         <section>
           <h2>codegen units</h2>
           <pre><code>
@@ -129,7 +176,7 @@ fn main() {}
                   mainll["main (LLVM IR)"]
                 end
 
-                mycgu1 --> mycgu1.rcgu.o
+                mycgu1 --> |LLVM| mycgu1.rcgu.o
 
                 mainmir --> mainll
 
@@ -313,18 +360,6 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## instantiation modes
-
-            the two ways to instantiate MIR:
-
-            - in the definition crate (Globally Shared)
-            - in the using crate (Local Copy)
-              - generic functions
-              - `#[inline]` functions
-          </textarea>
-        </section>
-        <section data-markdown>
-          <textarea data-template>
             ## inlining
 
             ```rust
@@ -341,7 +376,7 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## inlining
+            ## let's inline it
 
             ```rust
             fn add(a: u8, b: u8) -> u8 {
@@ -364,13 +399,13 @@ fn main() { math::add() }
             ## cross-crate inlining
 
             ```rust
-            fn add(a: u8, b: u8) -> u8 {
+            pub fn add(a: u8, b: u8) -> u8 {
               a + b
             }
             ```
             ```rust
             fn main() {
-              let x = add(1, 4); // what is the body?...
+              let x = math::add(1, 4); // what is the body?...
               println!("{x}");
             }
             ```
@@ -382,13 +417,13 @@ fn main() { math::add() }
 
             ```rust
             #[inline]
-            fn add(a: u8, b: u8) -> u8 {
+            pub fn add(a: u8, b: u8) -> u8 {
               a + b
             }
             ```
             ```rust
             fn main() {
-              let x = add(1, 4); // 💡 it's a + b
+              let x = math::add(1, 4); // 💡 it's a + b
               println!("{x}");
             }
             ```
@@ -398,13 +433,13 @@ fn main() { math::add() }
           <div style="display: flex; flex-direction: row; gap: 16px">
             <pre><code data-trim class="language-rust">
             #[inline]
-            fn add(a: u8, b: u8) -> u8 {
+            pub fn add(a: u8, b: u8) -> u8 {
               a + b
             }
           </code></pre>
             <pre><code data-trim class="language-rust">
             fn main() {
-              let x = add(1, 4);
+              let x = math::add(1, 4);
               println!("{x}");
             }
           </code></pre>
@@ -441,7 +476,7 @@ fn main() { math::add() }
             ## `#[inline]`
             - `#[inline]` enables cross-crate inlining of non-generic functions
             - for very small functions, this happens automatically
-            - for other functions, it doesn't, because it would be slow
+            - for other functions, it doesn't, because it would be slow (try with `-Zcross-crate-inline-threshold=always`)
             - don't over-apply it in a library, but also don't forget about it
             - benchmark!
           </textarea>
@@ -542,11 +577,11 @@ fn main() { math::add() }
           <textarea data-template>
             ## linker-plugin-lto
 
-            - "original" LTO
-            - like fat LTO
+            - fat LTO style and thin LTO style
             - the merging is not done by rustc but by the linker
             - works across languages (Rust (rustc) + C (clang))
             - great for FFI
+            - annoying to set up
           </textarea>
         </section>
       </div>
