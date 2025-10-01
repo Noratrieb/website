@@ -54,34 +54,21 @@
             </div>
           </div>
         </section>
+        <section data-markdown>
+          <textarea data-template>
+            # speed 🚀
+          </textarea>
+        </section>
         <section>
           <h2>behind cargo build</h2>
           <p>cargo vs rustc</p>
-          <div style="display: grid; grid-template-columns: 2fr 1fr 2fr">
-            <pre><code data-trim>
-                    $ cargo build -v
-                </code></pre>
-            <div style="display: flex; align-items: center">cargo</div>
-            <div style="display: flex; flex-direction: column; align-items: flex-start">
-              <div>rustc (clap)</div>
-              <div>rustc (tokio)</div>
-              <div>rustc (tracing)</div>
-              <div>rustc (yourcrate)</div>
-            </div>
+          <div>
+            asciinema of cargo build -v
           </div>
         </section>
         <section>
           <h2>what does rustc like, do?</h2>
           <h4>a quick overview of the compilation phases</h4>
-        </section>
-        <section>
-          <h2>it all starts at the source</h2>
-          <pre><code data-trim>
-              #[no_mangle]
-              pub fn add(a: u8, b: u8) -> u8 {
-                a.wrapping_add(b)
-              }
-            </code></pre>
         </section>
         <section>
           <h2>the frontend and the backend</h2>
@@ -98,36 +85,35 @@
           </div>
         </section>
         <section>
-          <h2>lex, parse, resolve, typecheck, all these fancy things</h2>
-          <div class="mermaid">
-            <pre>
-              %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
-              flowchart TB
-                function --> return
-                function --> params
-                params --> a_def[a]
-                params --> b_def[b]
-                function --> body
-                body --> cl["method call"]
-                cl --> a_use[a]
-                cl --> wrapping_add
-                cl --> b_use[b]
-            </pre>
-          </div>
+          <h2>it all starts at the source</h2>
+          <pre><code data-trim>
+              pub fn add(a: u8, b: u8) -> u8 {
+                a.wrapping_add(b)
+              }
+            </code></pre>
         </section>
         <section>
-          <h2>so you want to compile a crate</h2>
+          <h2>it gets processed</h2>
+          <pre><code data-trim>
+            #[attr = MacroUse {arguments: UseAll}]
+            extern crate std;
+            #[prelude_import]
+            use std::prelude::rust_2024::*;
+            fn add(a: u8, b: u8) -> u8 { a.wrapping_add(b) }
+            </code></pre>
+        </section>
+        <section>
+          <h2>until it doesn't even look like Rust anymore</h2>
           <p>MIR</p>
           <img src="add-runtime-mir.svg" />
         </section>
         <section data-markdown>
           <textarea data-template>
-          ## so you want to compile a crate
-          LLVM IR
+          ## further going to LLVM IR
 
           ```
           ; meow::add
-          define noundef i8 @add(i8 noundef %a, i8 noundef %b) unnamed_addr #0 {
+          define noundef i8 @add(i8 noundef %a, i8 noundef %b) #0 {
           start:
             %_0 = add i8 %b, %a
             ret i8 %_0
@@ -137,8 +123,7 @@
         </section>
         <section data-markdown>
           <textarea data-template>
-          ## so you want to compile a crate
-          Assembly
+          ## and thne you're done
 
           ```
           &lt;add&gt;:
@@ -149,9 +134,7 @@
         </section>
         <section data-markdown>
           <textarea data-template>
-          ## but compiling a ton of crates can't be that simple!
-
-          - yes
+          ## ok but why does my program compile so slowly now?
           </textarea>
         </section>
         <section data-markdown>
@@ -160,6 +143,29 @@
 
           - the how, what, and when of invoking LLVM
           </textarea>
+        </section>
+        <section>
+          <h2>a crate - the compilation unit</h2>
+          <p>quite big</p>
+          <p>in C it's just a single file</p>
+        </section>
+        <section>
+          <h2>a codegen unit</h2>
+          <p>LLVM is single-threaded</p>
+          <p>rustc: hi LLVM, look we are like a C file, now be fast</p>
+          <p>~1-256 depending on size and configuration (⚙️)</p>
+          <div class="mermaid">
+            <pre>
+              %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
+              flowchart LR
+                crate
+
+                crate --> cgu1["Codegen-Unit 1"]
+                crate --> cgu2["Codegen-Unit 2"]
+                crate --> cgu3["Codegen-Unit 3"]
+                crate --> cgu4["Codegen-Unit 4"]
+            </pre>
+          </div>
         </section>
         <section>
           <h2>codegen units</h2>
@@ -269,6 +275,13 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
+            # so compile times just depend on the amount of functions?
+
+            - no!
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
             ## generics
 
             ```rust
@@ -357,6 +370,19 @@ fn main() { math::add() }
                 end
             </pre>
           </div>
+        </section>
+        <section>
+          <textarea data-markdown>
+            # generics are slow to compile
+
+            - spend N times optimizing the function
+            - and there's duplicate instances!
+          </textarea>
+        </section>
+        <section>
+          <textarea data-markdown>
+            # and the duplicates get worse
+          </textarea>
         </section>
         <section data-markdown>
           <textarea data-template>
@@ -473,7 +499,7 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## `#[inline]`
+            ## `#[inline]` (⚙️)
             - `#[inline]` enables cross-crate inlining of non-generic functions
             - for very small functions, this happens automatically
             - for other functions, it doesn't, because it would be slow (try with `-Zcross-crate-inline-threshold=always`)
@@ -483,7 +509,7 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## but i want maximal performance...
+            ## what if I want to be able to inline everything across crates?
           </textarea>
         </section>
         <section data-markdown>
@@ -589,6 +615,14 @@ fn main() { math::add() }
             ## inlining across codegen units in the same crate
 
             - ThinLTO across different codegen units by default
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## all of this sucks
+
+            - wasted duplicate work
+            - missing optimizations without LTO
           </textarea>
         </section>
         <section data-markdown>
