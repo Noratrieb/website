@@ -123,7 +123,7 @@
         </section>
         <section data-markdown>
           <textarea data-template>
-          ## and thne you're done
+          ## and then you're done
 
           ```
           &lt;add&gt;:
@@ -277,7 +277,8 @@ fn main() { math::add() }
           <textarea data-template>
             # so compile times just depend on the amount of functions?
 
-            - no!
+            - yes...
+            - but not source functions!
           </textarea>
         </section>
         <section data-markdown>
@@ -371,16 +372,16 @@ fn main() { math::add() }
             </pre>
           </div>
         </section>
-        <section>
-          <textarea data-markdown>
+        <section data-markdown>
+          <textarea data-template>
             # generics are slow to compile
 
             - spend N times optimizing the function
             - and there's duplicate instances!
           </textarea>
         </section>
-        <section>
-          <textarea data-markdown>
+        <section data-markdown>
+          <textarea data-template>
             # and the duplicates get worse
           </textarea>
         </section>
@@ -500,16 +501,28 @@ fn main() { math::add() }
         <section data-markdown>
           <textarea data-template>
             ## `#[inline]` (⚙️)
-            - `#[inline]` enables cross-crate inlining of non-generic functions
+            - for non-generic functions
             - for very small functions, this happens automatically
-            - for other functions, it doesn't, because it would be slow (try with `-Zcross-crate-inline-threshold=always`)
+            - for other functions, it doesn't, because it would be slow
             - don't over-apply it in a library, but also don't forget about it
             - benchmark!
           </textarea>
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## what if I want to be able to inline everything across crates?
+            ## being lazy has advantages
+
+            - that's why i wrote most of this talk last week
+            - `#[inline]` means that the function is *never* instantiated if it's never used!
+
+            https://blog.rust-lang.org/inside-rust/2025/07/15/call-for-testing-hint-mostly-unused/
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## but performance is great, i love performance
+
+            - its ok i can wait forever
           </textarea>
         </section>
         <section data-markdown>
@@ -612,28 +625,40 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## inlining across codegen units in the same crate
+            ## there was some LTO all along
 
-            - ThinLTO across different codegen units by default
+            - in release mode, automatic ThinLTO across codegen units in the same crate
           </textarea>
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## all of this sucks
+            ## how do i make my program run quickly?
 
-            - wasted duplicate work
-            - missing optimizations without LTO
+            - let the compiler inline functions
+              - libraries: remember `#[inline]`
+              - binaries: you want LTO
+            - really, it really needs to inline your functions
+              - without it, it's so over
+            - and read this: https://nnethercote.github.io/perf-book
           </textarea>
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## `Cargo.toml` config
+            ## how do i make my program compile quickly?
 
-            ```toml
-            [profile.release]
-            lto = "thin"
-            codegen-units = 1
-            ```
+            - reduce the amount and size of functions
+              - importantly: in LLVM IR, not necessarily source!
+              - duplicate and frequent instantiations are bad
+            - and read this:
+              - https://corrode.dev/blog/tips-for-faster-rust-compile-times
+              - https://doc.rust-lang.org/nightly/cargo/guide/build-performance.html
+          </textarea>
+        </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## and both? 🥺👉👈
+
+            - no
           </textarea>
         </section>
         <section data-markdown>
