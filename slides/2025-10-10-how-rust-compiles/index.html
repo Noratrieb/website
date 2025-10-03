@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="../dist/reveal.css" />
     <link rel="stylesheet" href="../dist/theme/black.css" />
 
+    <link rel="stylesheet" type="text/css" href="asciinema-player.css" />
+    <script src="asciinema-player.min.js"></script>
+
     <!-- Theme used for syntax highlighted code -->
     <link rel="stylesheet" href="../plugin/highlight/monokai.css" />
     <style>
@@ -42,7 +45,7 @@
           </div>
         </section>
         <section>
-          <h2>introduction to me</h2>
+          <h2>introduction to myself</h2>
           <div style="display: flex">
             <div>
               <div>Noratrieb (she/her)</div>
@@ -60,11 +63,18 @@
           </textarea>
         </section>
         <section>
-          <h2>behind cargo build</h2>
-          <p>cargo vs rustc</p>
-          <div>
-            asciinema of cargo build -v
-          </div>
+          <!-- cargo build -v -j1 -->
+          <div id="cargo-build-v-asciinema-player"></div>
+          <script>
+            AsciinemaPlayer.create(
+              "cargo-build-v.cast",
+              document.getElementById("cargo-build-v-asciinema-player"),
+              {
+                cols: 134,
+                rows: 36,
+              }
+            );
+          </script>
         </section>
         <section>
           <h2>what does rustc like, do?</h2>
@@ -139,9 +149,9 @@
         </section>
         <section data-markdown>
           <textarea data-template>
-          ## backend orchestration
+          ## it's often LLVMs fault
 
-          - the how, what, and when of invoking LLVM
+          - but like not really
           </textarea>
         </section>
         <section>
@@ -378,6 +388,7 @@ fn main() { math::add() }
 
             - spend N times optimizing the function
             - and there's duplicate instances!
+            - `cargo-llvm-lines`
           </textarea>
         </section>
         <section data-markdown>
@@ -536,6 +547,67 @@ fn main() { math::add() }
             - comes in many forms
           </textarea>
         </section>
+        <!--
+# r-a
+
+base:
+Benchmark 1: cargo build --release
+  Time (mean ± σ):     58.150 s ±  0.163 s    [User: 758.211 s, System: 37.637 s]
+  Range (min … max):   57.936 s … 58.321 s    5 runs
+
+thin:
+Benchmark 1: cargo build --release
+Time (mean ± σ):     63.999 s ±  0.105 s    [User: 879.703 s, System: 40.045 s]
+Range (min … max):   63.921 s … 64.182 s    5 runs
+
+fat:
+Time (mean ± σ):     264.606 s ±  2.238 s    [User: 570.800 s, System: 31.826 s]
+Range (min … max):   261.573 s … 267.297 s    5 runs
+
+# cargo
+
+base:
+Benchmark 1: cargo build --release
+  Time (mean ± σ):     89.381 s ±  0.460 s    [User: 689.874 s, System: 55.347 s]
+  Range (min … max):   88.605 s … 89.696 s    5 runs
+
+thin:
+Benchmark 1: cargo build --release
+  Time (mean ± σ):     91.208 s ±  0.610 s    [User: 757.353 s, System: 58.558 s]
+  Range (min … max):   90.415 s … 92.112 s    5 runs
+
+fat:
+Time (mean ± σ):     212.215 s ±  2.062 s    [User: 576.259 s, System: 50.961 s]
+Range (min … max):   208.662 s … 213.818 s    5 runs
+
+# ripgrep
+
+base:
+Time (mean ± σ):      7.507 s ±  0.223 s    [User: 64.115 s, System: 4.514 s]
+Range (min … max):    7.357 s …  7.882 s    5 runs
+
+thin:
+Time (mean ± σ):      9.285 s ±  0.019 s    [User: 81.101 s, System: 5.241 s]
+Range (min … max):    9.262 s …  9.308 s    5 runs
+
+fat:
+Time (mean ± σ):     29.202 s ±  0.279 s    [User: 51.015 s, System: 3.652 s]
+Range (min … max):   28.860 s … 29.574 s    5 runs
+
+# triagebot
+
+base:
+Time (mean ± σ):     74.532 s ±  0.378 s    [User: 766.778 s, System: 58.719 s]
+Range (min … max):   74.105 s … 75.109 s    5 runs
+
+thin:
+Time (mean ± σ):     89.505 s ±  0.299 s    [User: 1523.951 s, System: 102.429 s]
+Range (min … max):   89.024 s … 89.796 s    5 runs
+
+fat:
+Time (mean ± σ):     273.275 s ±  1.694 s    [User: 929.604 s, System: 65.856 s]
+Range (min … max):   271.007 s … 275.619 s    5 runs
+        -->
         <section>
           <h2>lto = "fat" (monolithic)</h2>
           <div class="mermaid">
@@ -568,6 +640,7 @@ fn main() { math::add() }
                 end
             </pre>
           </div>
+          <p>compiles r-a 237583957% more slowly</p>
         </section>
         <section>
           <h2>lto = "thin" (sharded)</h2>
@@ -611,6 +684,7 @@ fn main() { math::add() }
                 end
             </pre>
           </div>
+          <p>compiles r-a 70% more slowly</p>
         </section>
         <section data-markdown>
           <textarea data-template>
@@ -676,6 +750,10 @@ fn main() { math::add() }
         <section data-markdown>
           <textarea data-template>
             ## happy compiling
+
+            slides at <a href="https://noratrieb.dev/slides/">https://noratrieb.dev/slides/</a>
+
+            <img src="seaslug.png" alt="sea slug with a tada emoji">
           </textarea>
         </section>
       </div>
