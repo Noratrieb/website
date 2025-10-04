@@ -1,6 +1,6 @@
 //! Root index.html and some other static stuff
 
-use std::path::Path;
+use std::{cmp::Reverse, path::Path};
 
 use color_eyre::{eyre::WrapErr, Result};
 
@@ -14,7 +14,13 @@ pub fn build(
 ) -> Result<()> {
     let mut context = tera::Context::new();
 
-    context.insert("talks", &config.talks);
+    let mut talks = config
+        .talks
+        .iter()
+        .filter(|talk| talk.hidden != Some(true))
+        .collect::<Vec<_>>();
+    talks.sort_by_cached_key(|talk| Reverse(talk.date.clone()));
+    context.insert("talks", &talks);
 
     utils::copy_fn(&statics.join("root"), dist, |content, ext, _opts| {
         if ext.is_some_and(|ext| matches!(ext, "html" | "css")) {

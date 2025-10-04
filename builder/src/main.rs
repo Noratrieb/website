@@ -38,6 +38,7 @@ struct Talk {
     location: String,
     #[serde(skip_deserializing)]
     dir_name: String,
+    hidden: Option<bool>,
 }
 
 impl Talk {

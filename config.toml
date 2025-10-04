@@ -1,4 +1,5 @@
 [slides]
 talks = [
     { name = "How to contribute to the Rust project", location = "Rust Zürisee", date = "2024-01-17" },
+    { name = "How Rust compiles", location = "EuroRust Paris 2025", date = "2025-10-10", hidden = true },
 ]

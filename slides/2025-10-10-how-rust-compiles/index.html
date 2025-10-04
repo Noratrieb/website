@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
 
-    <title>how rust compiles</title>
+    <title>how Rust compiles</title>
 
     <link rel="stylesheet" href="../dist/reset.css" />
     <link rel="stylesheet" href="../dist/reveal.css" />
@@ -34,7 +34,7 @@
         <section style="height: 100%">
           <div style="display: flex; align-items: flex-start; height: 100%">
             <details>
-              <summary>the rust compilation model has surprising effects</summary>
+              <summary>the Rust compilation model has surprising effects</summary>
               <iframe
                 height="600"
                 width="800"
@@ -60,21 +60,10 @@
         <section data-markdown>
           <textarea data-template>
             # speed 🚀
+
+            - compile times
+            - runtime performance
           </textarea>
-        </section>
-        <section>
-          <!-- cargo build -v -j1 -->
-          <div id="cargo-build-v-asciinema-player"></div>
-          <script>
-            AsciinemaPlayer.create(
-              "cargo-build-v.cast",
-              document.getElementById("cargo-build-v-asciinema-player"),
-              {
-                cols: 134,
-                rows: 36,
-              }
-            );
-          </script>
         </section>
         <section>
           <h2>what does rustc like, do?</h2>
@@ -155,6 +144,20 @@
           </textarea>
         </section>
         <section>
+          <!-- cargo build -v -j1 -->
+          <div id="cargo-build-v-asciinema-player"></div>
+          <script>
+            AsciinemaPlayer.create(
+              "cargo-build-v.cast",
+              document.getElementById("cargo-build-v-asciinema-player"),
+              {
+                cols: 134,
+                rows: 36,
+              }
+            );
+          </script>
+        </section>
+        <section>
           <h2>a crate - the compilation unit</h2>
           <p>quite big</p>
           <p>in C it's just a single file</p>
@@ -163,7 +166,7 @@
           <h2>a codegen unit</h2>
           <p>LLVM is single-threaded</p>
           <p>rustc: hi LLVM, look we are like a C file, now be fast</p>
-          <p>~1-256 depending on size and configuration (⚙️)</p>
+          <p>~1-256 depending on size and configuration</p>
           <div class="mermaid">
             <pre>
               %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'fontSize': '25px' }}}%%
@@ -303,6 +306,8 @@ fn main() { math::add() }
             add(0_u16, 0_u16); // creates add<u16> function
             add(0_u32, 0_u32); // creates add<u32> function
             ```
+
+            - monomorphization, creating a copy for each type it is used with
           </textarea>
         </section>
         <section>
@@ -511,7 +516,7 @@ fn main() { math::add() }
         </section>
         <section data-markdown>
           <textarea data-template>
-            ## `#[inline]` (⚙️)
+            ## `#[inline]`
             - for non-generic functions
             - for very small functions, this happens automatically
             - for other functions, it doesn't, because it would be slow
