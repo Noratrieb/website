@@ -85,20 +85,10 @@
         </section>
         <section>
           <h2>it all starts at the source</h2>
-          <pre><code data-trim>
+          <pre><code data-trim class="language-rust">
               pub fn add(a: u8, b: u8) -> u8 {
                 a.wrapping_add(b)
               }
-            </code></pre>
-        </section>
-        <section>
-          <h2>it gets processed</h2>
-          <pre><code data-trim>
-            #[attr = MacroUse {arguments: UseAll}]
-            extern crate std;
-            #[prelude_import]
-            use std::prelude::rust_2024::*;
-            fn add(a: u8, b: u8) -> u8 { a.wrapping_add(b) }
             </code></pre>
         </section>
         <section>
@@ -176,13 +166,12 @@
                 crate --> cgu1["Codegen-Unit 1"]
                 crate --> cgu2["Codegen-Unit 2"]
                 crate --> cgu3["Codegen-Unit 3"]
-                crate --> cgu4["Codegen-Unit 4"]
             </pre>
           </div>
         </section>
         <section>
           <h2>codegen units</h2>
-          <pre><code>
+          <pre><code data-trim class="language-rust">
 fn main() {}
           </code></pre>
           <div class="mermaid">
@@ -199,17 +188,31 @@ fn main() {}
 
                 mainmir --> mainll
 
-                mycgu1.rcgu.o --> my_binary
-                std["std (and others)"] --> my_binary
+                mycgu1.rcgu.o --> |link| my_binary
+                std["std (and others)"] --> |link| my_binary
             </pre>
           </div>
         </section>
+        <section data-markdown>
+          <textarea data-template>
+            ## the linker
+
+            can be a slow part for incremental builds
+
+            - LLD (Linux (default for x86-64), Windows)
+            - [mold (Linux)](https://github.com/rui314/mold)
+            - [wild (Linux, experimental)](https://github.com/davidlattimore/wild)
+            - MacOS default ld64 is fast already
+          </textarea>
+        </section>
         <section>
           <h2>codegen units (but more)</h2>
-          <pre><code>
+          <pre><code data-trim class="language-rust">
 fn main() {}
-fn foo1() {}
-fn foo2() {}
+mod foos {
+  fn foo1() {}
+  fn foo2() {}
+}
           </code></pre>
           <div class="mermaid">
             <pre>
@@ -243,7 +246,7 @@ fn foo2() {}
         <section>
           <h2>codegen units (cross-crate)</h2>
           <div style="display: flex; flex-direction: row; gap: 16px">
-            <pre><code>
+            <pre><code data-trim class="language-rust">
 fn add() {}
           </code></pre>
             <pre><code>
@@ -394,6 +397,7 @@ fn main() { math::add() }
             - spend N times optimizing the function
             - and there's duplicate instances!
             - `cargo-llvm-lines`
+            - share-generics helps for non-release builds
           </textarea>
         </section>
         <section data-markdown>
@@ -552,67 +556,6 @@ fn main() { math::add() }
             - comes in many forms
           </textarea>
         </section>
-        <!--
-# r-a
-
-base:
-Benchmark 1: cargo build --release
-  Time (mean ± σ):     58.150 s ±  0.163 s    [User: 758.211 s, System: 37.637 s]
-  Range (min … max):   57.936 s … 58.321 s    5 runs
-
-thin:
-Benchmark 1: cargo build --release
-Time (mean ± σ):     63.999 s ±  0.105 s    [User: 879.703 s, System: 40.045 s]
-Range (min … max):   63.921 s … 64.182 s    5 runs
-
-fat:
-Time (mean ± σ):     264.606 s ±  2.238 s    [User: 570.800 s, System: 31.826 s]
-Range (min … max):   261.573 s … 267.297 s    5 runs
-
-# cargo
-
-base:
-Benchmark 1: cargo build --release
-  Time (mean ± σ):     89.381 s ±  0.460 s    [User: 689.874 s, System: 55.347 s]
-  Range (min … max):   88.605 s … 89.696 s    5 runs
-
-thin:
-Benchmark 1: cargo build --release
-  Time (mean ± σ):     91.208 s ±  0.610 s    [User: 757.353 s, System: 58.558 s]
-  Range (min … max):   90.415 s … 92.112 s    5 runs
-
-fat:
-Time (mean ± σ):     212.215 s ±  2.062 s    [User: 576.259 s, System: 50.961 s]
-Range (min … max):   208.662 s … 213.818 s    5 runs
-
-# ripgrep
-
-base:
-Time (mean ± σ):      7.507 s ±  0.223 s    [User: 64.115 s, System: 4.514 s]
-Range (min … max):    7.357 s …  7.882 s    5 runs
-
-thin:
-Time (mean ± σ):      9.285 s ±  0.019 s    [User: 81.101 s, System: 5.241 s]
-Range (min … max):    9.262 s …  9.308 s    5 runs
-
-fat:
-Time (mean ± σ):     29.202 s ±  0.279 s    [User: 51.015 s, System: 3.652 s]
-Range (min … max):   28.860 s … 29.574 s    5 runs
-
-# triagebot
-
-base:
-Time (mean ± σ):     74.532 s ±  0.378 s    [User: 766.778 s, System: 58.719 s]
-Range (min … max):   74.105 s … 75.109 s    5 runs
-
-thin:
-Time (mean ± σ):     89.505 s ±  0.299 s    [User: 1523.951 s, System: 102.429 s]
-Range (min … max):   89.024 s … 89.796 s    5 runs
-
-fat:
-Time (mean ± σ):     273.275 s ±  1.694 s    [User: 929.604 s, System: 65.856 s]
-Range (min … max):   271.007 s … 275.619 s    5 runs
-        -->
         <section>
           <h2>lto = "fat" (monolithic)</h2>
           <div class="mermaid">
@@ -645,7 +588,7 @@ Range (min … max):   271.007 s … 275.619 s    5 runs
                 end
             </pre>
           </div>
-          <p>compiles r-a 237583957% more slowly</p>
+          <p>easily compiles 2-4x more slowly</p>
         </section>
         <section>
           <h2>lto = "thin" (sharded)</h2>
@@ -665,14 +608,16 @@ Range (min … max):   271.007 s … 275.619 s    5 runs
                 end
 
                 subgraph my crate
-                  subgraph thinltosummary[ThinLTO Summary]
+                  subgraph thinltosummary[ThinLTO Index]
                   end
                   
                   subgraph thinlto1[ThinLTO 1]
                     addll["add (LLVM IR)"]
-                    subll["sub (LLVM IR)"]
                   end
                   subgraph thinlto2[ThinLTO 2]
+                    subll["sub (LLVM IR)"]
+                  end
+                  subgraph thinlto3[ThinLTO 3]
                     mainll["main (LLVM IR)"]
                   end
 
@@ -686,10 +631,14 @@ Range (min … max):   271.007 s … 275.619 s    5 runs
 
                   thinlto1 --> my_binary
                   thinlto2 --> my_binary
+                  thinlto3 --> my_binary
                 end
             </pre>
           </div>
-          <p>compiles r-a 70% more slowly</p>
+          <p>
+            compiles ~1.1x-1.2x more slowly |
+            <a href="https://www.youtube.com/watch?v=p9nH2vZ2mNo">ThinLTO Talk</a>
+          </p>
         </section>
         <section data-markdown>
           <textarea data-template>
