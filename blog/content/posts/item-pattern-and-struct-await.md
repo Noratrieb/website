@@ -119,5 +119,5 @@ This shows the flexibility of the programming style, which can be used for many 
 
 
 [^insightful]: Supposedly. People have said "still shocked this has not been stabilized yet" about this.
-[^protocolxml]: It doesn't exist. Don't even try. No.
+[^protocolxml]: meow.
 [^libxml]: It is suggested to use `libxml2` to implement this module.
