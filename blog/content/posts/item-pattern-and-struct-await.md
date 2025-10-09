@@ -13,7 +13,7 @@ draft = false
 
 # The Inconsistency Problem
 
-Quite some time ago, I wrote [a blog post about the idea of `struct else`](./item-patterns-and-struct-else.md), which has been widely regarded as one of the most insightful pieces of Rust language design in the last few years[^insightful].
+Quite some time ago, I wrote [a blog post about the idea of `struct else`](../item-patterns-and-struct-else), which has been widely regarded as one of the most insightful pieces of Rust language design in the last few years[^insightful].
 If you have not read it, it's **strongly** recommended to first read it.
 
 But more recently, it has become clear that there are some serious problems around items that cause this to not work properly.
