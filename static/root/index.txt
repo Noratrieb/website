@@ -61,7 +61,7 @@ Table of Contents
 
 3.  Slides
 
-   i've given some (one) talks. you can find the slides on my website,
+   i've given some (two) talks. you can find the slides on my website,
    right over there. i made them with reveal.js which means you can
    interact with them right on the web, it's like magic.
 
