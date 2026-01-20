@@ -3,6 +3,5 @@
     rustup
     hugo
     nodejs
-    nodePackages.live-server
   ];
 }
