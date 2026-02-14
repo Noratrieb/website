@@ -96,6 +96,8 @@ Table of Contents
       sure to include the reason in the first message or i will ignore
       it)
 
+   *  Matrix: @nora;noratrieb.dev
+
    *  Mastodon: @noratrieb@hachyderm.io
 
    *  Bluesky: noratrieb.dev
