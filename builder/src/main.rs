@@ -6,7 +6,6 @@ extern crate tracing;
 
 use std::{
     path::{Path, PathBuf},
-    process::{self, Stdio},
     time,
 };
 
@@ -110,30 +109,6 @@ fn watch(root: PathBuf) -> Result<()> {
 
     watcher.watch(&root.join("static"), RecursiveMode::Recursive)?;
     watcher.watch(&root.join("config.toml"), RecursiveMode::NonRecursive)?;
-
-    info!("Starting webserver");
-    let root1 = root.clone();
-    std::thread::spawn(move || {
-        let root = root1;
-        let run = || -> Result<()> {
-            let path = root.join("dist");
-            let mut server = process::Command::new("live-server");
-            server
-                .current_dir(path)
-                .stdout(Stdio::null())
-                .stderr(Stdio::null());
-
-            let mut child = server.spawn().wrap_err("failed to spawn `live-server`.\
-                Install https://github.com/tapio/live-server into your PATH, for example with nix, see shell.nix")?;
-            let exit = child.wait().wrap_err("interrupt waiting for live-server")?;
-            bail!("live-server exited early, exit: {exit}");
-        };
-
-        if let Err(e) = run() {
-            error!(?e);
-            process::exit(1);
-        }
-    });
 
     info!("Starting loop");
 

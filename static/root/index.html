@@ -50,13 +50,14 @@
       }
 
       .numbered-section {
-        counter-set: subsection 1;
+        counter-set: subsection 0;
       }
       .numbered-section::before {
         counter-increment: section;
         content: counter(section) ". ";
       }
       .numbered-subsection::before {
+        counter-increment: subsection;
         content: counter(section) "." counter(subsection) ". ";
       }
 
@@ -131,6 +132,7 @@
         <h2 class="section-heading">Table of Contents</h2>
         <div class="section-body toc">
           <ol>
+            <li><a href="#introduction">Introduction</a></li>
             <li><a href="#blog">Blog</a></li>
             <li><a href="#socials">Socials</a></li>
             <li><a href="#slides">Slides</a></li>
@@ -138,11 +140,29 @@
               <a href="#projects">Projects</a>
               <ol>
                 <li><a href="#projects-rust">Rust</a></li>
+                <li><a href="#projects-other">Other</a></li>
               </ol>
             </li>
+            <li><a href="#about-me">About me</a></li>
             <li><a href="#contact">Contact</a></li>
           </ol>
         </div>
+        <section id="introduction">
+          <h2 class="section-heading numbered-section">Introduction</h2>
+          <section id="projects-rust">
+            <h3 class="section-heading numbered-subsection">Conventions and Terminology</h3>
+            <div class="section-body">
+              The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD
+              NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to
+              be interpreted as described in
+              <a href="https://datatracker.ietf.org/doc/html/bcp14">BCP 14</a> [<a
+                href="https://datatracker.ietf.org/doc/html/rfc2119"
+                >RFC2119</a
+              >] [<a href="https://datatracker.ietf.org/doc/html/rfc8174">RFC8174</a>] when, and
+              only when, they appear in all capitals, as shown here.
+            </div>
+          </section>
+        </section>
         <section id="blog">
           <h2 class="section-heading numbered-section">Blog</h2>
           <div class="section-body">
@@ -228,6 +248,38 @@
             </div>
           </section>
         </section>
+        <section id="about-me">
+          <h2 class="section-heading numbered-section">About me</h2>
+          <section id="about-me-general">
+            <h3 class="section-heading numbered-subsection">General</h3>
+            <div class="section-body">
+              <p>
+                my name is nora and my pronouns are she/her (you can also find them in DNS as
+                <code>TXT pronouns.noratrieb.dev</code>). i like doing all kinds of things with
+                computers and learning about how they work. i like learning about anything really,
+                i'm also interested in history and other sciences.
+              </p>
+              <p>
+                i work as a web developer, where i make websites and systems. this website is also
+                very cool.
+              </p>
+            </div>
+          </section>
+          <section id="about-me-known-as">
+            <h3 class="section-heading numbered-subsection">Also known as</h3>
+            <div class="section-body">
+              <ul>
+                <li>
+                  <code>lw t5, 208(sp); lw sp, 20(sp)</code>
+                  <details>
+                    <summary>explanation</summary>
+                    the ASCII bytes for <code>NORA</code> encoded as RISC-V instructions
+                  </details>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
         <section id="contact">
           <h2 class="section-heading numbered-section">Contact</h2>
           <div class="section-body">
@@ -236,8 +288,8 @@
               <li>
                 discord (preferred):
                 <code>noratrieb</code>
-                . if you're on a server where i'm too (like the Rust Community Discord) you can just DM me
-                (make sure to include the reason in the first message or i will ignore it)
+                . if you're on a server where i'm too (like the Rust Community Discord) you can just
+                DM me (make sure to include the reason in the first message or i will ignore it)
               </li>
               <li>
                 Matrix:
